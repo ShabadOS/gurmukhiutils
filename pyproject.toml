@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "gurmukhiutils"
+version = "1.0.0-alpha.0"
+description = "Utilities library for converting, analyzing, and testing Gurmukhi strings"
+license = "MIT"
+authors = ["Bhajneet S.K. <bhajneet@gmail.com>"]
+maintainers = ["Bhajneet S.K. <bhajneet@gmail.com>"]
+readme = "README.md"
+# homepage = ""
+repository = "https://github.com/shabados/gurmukhiutils"
+documentation = "https://docs.shabados.com/gurmukhi-utils/"
+keywords = [ "gurbani", "gurmukhi", "sikh", "transliterate", "unicode" ]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
+pre-commit = "^2.15.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+known_first_party = "gurmukhiutils"
+profile = "black"
+src_paths = ["gurmukhiutils", "tests"]
+filter_files = true
+
+[tool.black]
+line-length = 88
