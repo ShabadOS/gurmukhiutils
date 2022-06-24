@@ -1,87 +1,108 @@
-def strip(input, *removals):
+from gurmukhiutils.constants import VISHRAMS
+
+
+def strip(string: str, removals: list) -> str:
     """
-    Arg(s):
-        input (string): The input string to modify.
-        *removals: Variable length string arguments or
-            a single tuple of string(s) to strip from input.
+    Strips substrings from a string.
+
+    Args:
+        string: The string to modify.
+        removals: Any substring to remove.
 
     Returns:
-        string: The input without the specified removals.
+        The string without any substrings.
 
-    Example(s):
-        >>> from gurmukhiutils.strip import strip
-        >>> print(strip("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", ".", ","))
-        ਸਬਦ ਸਬਦ ਸਬਦ; ਸਬਦ
+    Examples:
+        >>> strip("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", [".", ","])
+        'ਸਬਦ ਸਬਦ ਸਬਦ; ਸਬਦ'
 
-        >>> from gurmukhiutils.strip import strip
-        >>> VISHRAMS = [".", ",", ";"]
-        >>> print(strip("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", VISHRAMS))
-        ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ
+        >>> strip("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", gurmukhiutils.constants.VISHRAMS)
+        'ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ'
 
     """
-
     try:
         removals[0].split()
     except AttributeError:
         removals = removals[0]
     for removal in removals:
-        input = input.replace(removal, "")
+        string = string.replace(removal, "")
 
-    return input
+    return string
 
 
-def strip_past(input, *removals):
+def strip_regex(string, patterns):
     """
-    Arg(s):
-        input (string): The input string to modify.
-        *removals: Variable length string arguments or
-            a single tuple of string(s) to remove past.
+    Strips regex patterns from a string.
+
+    Args:
+        string: The string to modify.
+        patterns: Any pattern to remove.
 
     Returns:
-        string: The input up to the first occurence of the
-            specified removals.
+        The string without any matching patterns.
 
-    Example(s):
-        >>> from gurmukhiutils.strip import strip_past
-        >>> print(strip_past("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", ".", ","))
-        ਸਬਦ
+    Example:
+        >>> strip_regex("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", [".+\\s"])
+        'ਸਬਦ'
 
     """
+    import re
 
     try:
-        removals[0].split()
+        patterns[0].split()
     except AttributeError:
-        removals = removals[0]
-    for removal in removals:
-        if (index := input.find(removal)) >= 0:
-            input = input[0:index]
+        patterns = patterns[0]
 
-    return input.rstrip()
+    for pattern in patterns:
+        string = re.sub(pattern, "", string)
+
+    while "  " in string:
+        string = string.replace("  ", " ")
+
+    return string.strip()
 
 
-def strip_line_endings(input):
-    from gurmukhiutils.constants import LINE_ENDING_CHARS, LINE_ENDING_PATTERNS
-
+def strip_line_endings(input: str) -> str:
     """
-    Arg(s):
-        input (string): The input string to modify.
+    Removes line endings.
+
+    Arg:
+        input: The input string to modify.
 
     Returns:
-        string: The input without line endings / end blocks.
+        The input without line endings.
 
-    Example(s):
-        >>> from gurmukhiutils.strip import strip_line_endings
-        >>> print(strip_line_endings("ਸਬਦ ॥ ਸਬਦ ॥੧॥ ਰਹਾਉ ॥")
-        ਸਬਦ ਸਬਦ
+    Example:
+        >>> strip_line_endings("ਸਬਦ ॥ ਸਬਦ ॥੧॥ ਰਹਾਉ ॥")
+        'ਸਬਦ ਸਬਦ'
 
     """
+    line_ending_patterns = [
+        "[।॥] ਰਹਾਉ.*",
+        "[।॥][੦-੯].*",
+        "\\|\\|\\d.*",
+        "\\|\\|Pause.*",
+        "[।॥(\\|\\|)]",
+    ]
 
-    input = strip_past(input, LINE_ENDING_PATTERNS)
+    return strip_regex(input, line_ending_patterns)
 
-    for char in LINE_ENDING_CHARS:
-        input = input.replace(char, "")
 
-    while "  " in input:
-        input = input.replace("  ", " ")
+def strip_vishrams(input: str) -> str:
+    """
+    Removes all vishram characters.
 
-    return input.strip()
+    Arg:
+        input: The input string to modify.
+
+    Returns:
+        The input without vishrams.
+
+    Example:
+        >>> strip_vishrams(ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ ॥)
+        'ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ ॥'
+
+    """
+    from gurmukhiutils.constants import VISHRAMS
+
+    return strip(input, VISHRAMS)
