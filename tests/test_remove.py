@@ -1,5 +1,5 @@
-def test_strip_vishrams():
-    from gurmukhiutils.strip import strip_vishrams
+def test_remove_vishrams():
+    from gurmukhiutils.remove import remove_vishrams
 
     assertions = {
         "ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ ॥": "ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ ॥",
@@ -8,16 +8,16 @@ def test_strip_vishrams():
     }
 
     for key, value in assertions.items():
-        assert strip_vishrams(key) == value
+        assert remove_vishrams(key) == value
 
 
-def test_strip_vishram():
+def test_remove_vishram():
     from gurmukhiutils.constants import (
         VISHRAM_HEAVY,
         VISHRAM_LIGHT,
         VISHRAM_MEDIUM,
     )
-    from gurmukhiutils.strip import strip
+    from gurmukhiutils.remove import remove
 
     heavy_assertions = {
         "sbd, sbd sbd; sbd ]": "sbd, sbd sbd sbd ]",
@@ -40,24 +40,32 @@ def test_strip_vishram():
     }
 
     for key, value in heavy_assertions.items():
-        assert strip(key, VISHRAM_HEAVY) == value
+        assert remove(key, VISHRAM_HEAVY) == value
 
     for key, value in medium_assertions.items():
-        assert strip(key, VISHRAM_MEDIUM) == value
+        assert remove(key, VISHRAM_MEDIUM) == value
 
     for key, value in light_assertions.items():
-        assert strip(key, VISHRAM_LIGHT) == value
+        assert remove(key, VISHRAM_LIGHT) == value
 
     for key, value in medium_and_heavy_assertions.items():
-        assert strip(key, [VISHRAM_MEDIUM, VISHRAM_HEAVY]) == value
+        assert remove(key, [VISHRAM_MEDIUM, VISHRAM_HEAVY]) == value
 
 
-def test_strip_line_endings():
-    from gurmukhiutils.strip import strip_line_endings
+def test_remove_line_endings():
+    from gurmukhiutils.remove import remove_line_endings
 
     assertions = {
+        # ignore:
+        "ਮਹਲਾ ੧": "ਮਹਲਾ ੧",
+        "ਮਹਲਾ ੫": "ਮਹਲਾ ੫",
+        "mahalaa 1": "mahalaa 1",
+        "महला ५": "महला ५",
+        # affect:
         "ਸਬਦ ॥ ਰਹਾਉ ॥": "ਸਬਦ",
+        "सबद ॥ रहाउ ॥": "सबद",
         "ਸਬਦ ॥੧॥ ਰਹਾਉ ॥": "ਸਬਦ",
+        "सबद ॥१॥ रहाउ ॥": "सबद",
         "ਸਬਦ ॥੧॥ ਰਹਾਉ ਦੂਜਾ ॥": "ਸਬਦ",
         "ਸਬਦ ॥੪॥੬॥ ਛਕਾ ੧ ॥": "ਸਬਦ",
         "ਸਬਦ ॥੨॥੧੨॥ ਛਕੇ ੨ ॥": "ਸਬਦ",
@@ -74,12 +82,16 @@ def test_strip_line_endings():
         "ਸਬਦ ॥ ਸਬਦ ॥": "ਸਬਦ ਸਬਦ",
         "॥ ਸਬਦ ॥": "ਸਬਦ",
         "ਸਬਦ ॥ ਸਬਦ ॥੨॥੨॥": "ਸਬਦ ਸਬਦ",
-        "ਮਹਲਾ ੧": "ਮਹਲਾ ੧",
-        "ਮਹਲਾ ੫": "ਮਹਲਾ ੫",
         "Example test. ||1||": "Example test.",
         "Example test. ||1||Pause||": "Example test.",
         "Example test. ||Pause||": "Example test.",
+        "sabad |4|6| chhakaa 1 |": "sabad",
+        "sabad | rahaau doojaa |1|3| sabad": "sabad",
+        "sabad | rahau doojaa |1|3| sabad": "sabad",
+        "sabad | rahao doojaa |1|3| sabad": "sabad",
+        "sabad | sabad |": "sabad sabad",
+        "| sabad |": "sabad",
     }
 
     for key, value in assertions.items():
-        assert strip_line_endings(key) == value
+        assert remove_line_endings(key) == value
