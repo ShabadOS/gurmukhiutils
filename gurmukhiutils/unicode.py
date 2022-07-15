@@ -248,6 +248,7 @@ def sort_diacritics(string: str) -> str:
 
     Subjoined letters are constructed (they are not single char), so they cannot be used in the same regex group pattern. See further below for subjoined letters.
     """
+
     BASE_LETTER_MODIFIERS = [
         "਼",
         "ੑ",
@@ -261,6 +262,7 @@ def sort_diacritics(string: str) -> str:
 
     https://www.unicode.org/versions/Unicode14.0.0/ch12.pdf
     """
+
     VOWEL_ORDER = [
         "ਿ",
         "ੇ",
@@ -276,6 +278,7 @@ def sort_diacritics(string: str) -> str:
     """
     The remaining diacritics are to be sorted at the end according to the following order
     """
+
     REMAINING_MODIFIER_ORDER = [
         "ਁ",
         "ੱ",
@@ -292,6 +295,7 @@ def sort_diacritics(string: str) -> str:
 
     The patterns for the single-chars and the subjoined letters:
     """
+
     GENERATED_MARKS = "".join(
         BASE_LETTER_MODIFIERS + VOWEL_ORDER + REMAINING_MODIFIER_ORDER
     )
@@ -306,6 +310,7 @@ def sort_diacritics(string: str) -> str:
         >>> print(REGEX_MATCH_PATTERN)
         '([਼ੵਿੇੈੋੌੁੂਾੀਁੱਂੰਃ]*)(੍[ਹਰਵਟਤਨਚ])?([਼ੵਿੇੈੋੌੁੂਾੀਁੱਂੰਃ]*)'
     """
+
     REGEX_MATCH_PATTERN = f"{MARK_PATTERN}{BELOW_BASE_PATTERN}{MARK_PATTERN}"
 
     """
@@ -313,6 +318,7 @@ def sort_diacritics(string: str) -> str:
         >>> print(GENERATED_MATCH_ORDER)
         '਼ਹਰਵਟਤਨਚਿੇੈੋੌੁੂਾੀਁੱਂੰਃ'
    """
+
     GENERATED_MATCH_ORDER = "".join(
         BASE_LETTER_MODIFIERS
         + [VIRAMA]
@@ -325,6 +331,7 @@ def sort_diacritics(string: str) -> str:
         """
         This re-arranges characters in "match" according to a custom sort order "GENERATED_MATCH_ORDER"
         """
+
         if len(_match := match.group()) > 1:
             _match = sorted(_match, key=lambda e: GENERATED_MATCH_ORDER.index(e))
             _match = "".join(_match)
