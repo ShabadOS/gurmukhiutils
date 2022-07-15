@@ -11,6 +11,11 @@ def unicode(
     """
     Converts any ascii gurmukhi characters and sanitizes to unicode gurmukhi.
 
+    Note:
+        Converting yayya (ਯ) variants with an open-top using the Unicode Consortium standard is considered destructive. This function will substitute the original with it's shirorekha/top-line equivalent.
+
+        Many fonts and text shaping engines fail to render half-yayya (੍ਯ) correctly. Regardless of the standard used, it is recommended to use the Sant Lipi font mentioned below.
+
     Args:
         string: The string to affect.
 
@@ -160,37 +165,16 @@ def unicode(
 
     # OpenGurbaniAkhar by Sarabveer Singh (GurbaniNow)
     SANT_LIPI_MAP = {
-        "Î": "\ueeec",  # replace capital i-circumflex letter, half-yayya
-        "੍ਯ": "\ueeec",  # replace unicode half-yayya
-        "î": "\ueeee",  # i-circumflex letter, open-top half-yayya
-        "ï": "\ueeef",  # i-diaeresis letter, open-top full yayya
-        "\u2080": "\uee80",  # missing subscript 0 (₀)
-        "\u2081": "\uee81",  # subscript 1 (₁) number
-        "\u2082": "\uee82",  # subscript 2 (₂) number
-        "\u2083": "\uee83",  # subscript 3 (₃) number
-        "\u2084": "\uee84",  # subscript 4 (₄) number
-        "\u2085": "\uee85",  # subscript 5 (₅) number
-        "\u2086": "\uee86",  # subscript 6 (₆) number
-        "\u2087": "\uee87",  # missing subscript 7 (₇)
-        "\u2088": "\uee88",  # subscript 8 (₈) number
-        "\u2089": "\uee89",  # missing subscript 9 (₉)
+        "Î": "꠳ਯ",  # replace capital i-circumflex letter with indic one-sixteenth + yayya = half-yayya
+        "੍ਯ": "꠳ਯ",  # replace unicode half-yayya with same as above
+        "ï": "꠴ਯ",  # replace i-diaeresis letter with indic one-eight + yayya = open-top full yayya
+        "î": "꠵ਯ",  # replace i-circumflex letter with indic three-sixtenths + yayya = open-top half-yayya
     }
 
     SANT_LIPI_TO_STANDARD_MAP = {
-        "\ueeec": "੍ਯ",
-        "\ueeee": "੍ਯ",
-        "\ueeef": "ਯ",
-        # The Shabad OS Database as of 2022-06-27 only has these occur before a white-space character:
-        "\uee80": "₀",
-        "\uee81": "₁",
-        "\uee82": "₂",
-        "\uee83": "₃",
-        "\uee84": "₄",
-        "\uee85": "₅",
-        "\uee86": "₆",
-        "\uee87": "₇",
-        "\uee88": "₈",
-        "\uee89": "₉",
+        "꠳ਯ": "੍ਯ",
+        "꠴ਯ": "ਯ",
+        "꠵ਯ": "੍ਯ",
     }
 
     # Move ASCII sihari before mapping to unicode
@@ -213,17 +197,6 @@ def unicode(
         # Map Sant Lipi to Unicode Consortium
         for key, value in SANT_LIPI_TO_STANDARD_MAP.items():
             string = string.replace(key, value)
-
-        """
-        Fix occurences of half-yayya + diacritic(s)
-
-        This seems to be a major pitfall of the Unicode standard.
-
-        Looks as though using a subjoined character for what is actually a base letter, there is no way to properly add accents / vowels to either the half-y or the letter preceding it.
-
-        Recommendation is to use Sant Lipi standard + font in the mean time.
-        """
-        string = re.sub("(੍ਯ)([਼੍ੵਿੇੈੋੌੁੂਾੀਁੱਂੰਃ]+)", r"ਯ\2", string)
 
     return string
 

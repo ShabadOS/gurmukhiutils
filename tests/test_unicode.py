@@ -132,13 +132,13 @@ def test_unicode_yayya():
         # Half-Y (open-left) with no diacritics renders correctly.
         "mDÎ": "ਮਧ੍ਯ",
         "ilKÎqy": "ਲਿਖ੍ਯਤੇ",
-        # Half-Y with any diacritics converts the base letter to Yayya.
-        "mwnÎo": "ਮਾਨਯੋ",
-        "iBÎo": "ਭਿਯੋ",
-        "kIÎo": "ਕੀਯੋ",
-        "sÎwm": "ਸਯਾਮ",
-        "qÎwgÎo": "ਤਯਾਗਯੋ",
-        "jÎoN": "ਜਯੋਂ",
+        # Half-Y with any diacritics may render incorrectly with sub-par fonts / shaping engines
+        "mwnÎo": "ਮਾਨ੍ਯੋ",
+        "iBÎo": "ਭਿ੍ਯੋ",
+        "kIÎo": "ਕੀ੍ਯੋ",
+        "sÎwm": "ਸ੍ਯਾਮ",
+        "qÎwgÎo": "ਤ੍ਯਾਗ੍ਯੋ",
+        "jÎoN": "ਜ੍ਯੋਂ",
         # Open-top Yayya doesn't exist in Unicode 14.0, converts base-letter to Yayya.
         "nwmï": "ਨਾਮਯ",
         "sunIïhu": "ਸੁਨੀਯਹੁ",
@@ -146,21 +146,47 @@ def test_unicode_yayya():
         "kFïo": "ਕਢਯੋ",
         "sïwm": "ਸਯਾਮ",
         # Open-top Half-Y doesn't exist in Unicode 14.0.
-        # Converts to Half-Y if no diacritics,
-        # else converts to Yayya.
+        # Converts to Half-Y (may render incorrectly with sub-par fonts / shaping engines)
         "idqïwidqî": "ਦਿਤਯਾਦਿਤ੍ਯ",
-        "qRsîo": "ਤ੍ਰਸਯੋ",
+        "qRsîo": "ਤ੍ਰਸ੍ਯੋ",
     }
 
     sant_lipi_assertions = {
-        # Work in progress, depends on custom font completion progress
-        "kFïo": "ਕਢ\ueeefੋ",
-        "qRsîo": "ਤ੍ਰਸ\ueeeeੋ",
-        "idqïwidqî": "ਦਿਤ\ueeefਾਦਿਤ\ueeee",
+        # Yayya
+        "XkIN": "ਯਕੀਂ",
+        "ipRX": "ਪ੍ਰਿਯ",
+        "hX¤wiq": "ਹਯਾੱਤਿ",
+        "hXw¤iq": "ਹਯਾੱਤਿ",
+        "hmwXUM": "ਹਮਾਯੂੰ",
+        "BXuo": "ਭਯੋੁ",
+        "XkIn": "ਯਕੀਨ",
+        # Half-Y (open-left)
+        "mDÎ": "ਮਧ꠳ਯ",
+        "ilKÎqy": "ਲਿਖ꠳ਯਤੇ",
+        "mwnÎo": "ਮਾਨ꠳ਯੋ",
+        "iBÎo": "ਭਿ꠳ਯੋ",
+        "kIÎo": "ਕੀ꠳ਯੋ",
+        "sÎwm": "ਸ꠳ਯਾਮ",
+        "qÎwgÎo": "ਤ꠳ਯਾਗ꠳ਯੋ",
+        "jÎoN": "ਜ꠳ਯੋਂ",
+        # Open-top Yayya
+        "nwmï": "ਨਾਮ꠴ਯ",
+        "sunIïhu": "ਸੁਨੀ꠴ਯਹੁ",
+        "AdyïM": "ਅਦੇ꠴ਯੰ",
+        "kFïo": "ਕਢ꠴ਯੋ",
+        "sïwm": "ਸ꠴ਯਾਮ",
+        # Open-top Half-Y
+        "idqïwidqî": "ਦਿਤ꠴ਯਾਦਿਤ꠵ਯ",
+        "qRsîo": "ਤ੍ਰਸ꠵ਯੋ",
     }
 
     for key, value in unicode_compliant_assertions.items():
         assert triple_unicode(key) == value
+
+        # Sant Lipi -> Unicode Compliant -> Sant Lipi -> Unicode Compliant
+        assert (
+            unicode(unicode(unicode(unicode(key, "Sant Lipi")), "Sant Lipi")) == value
+        )
 
     for key, value in sant_lipi_assertions.items():
         assert (
