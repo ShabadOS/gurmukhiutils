@@ -384,11 +384,8 @@ def decode_unicode(string: str) -> list:
         >>> decode_unicode("To ਜੀ")
         [{'T': '0054'}, {'o': '006f'}, {' ': '0020'}, {'ਜ': '0a1c'}, {'ੀ': '0a40'}]
     """
-    list = []
-    for item in string:
-        list.append({item: format(ord(item), "04x")})
 
-    return list
+    return [{item: format(ord(item), "04x")} for item in string]
 
 
 def encode_unicode(strings: list) -> list:
@@ -408,8 +405,5 @@ def encode_unicode(strings: list) -> list:
         >>> encode_unicode(["0a1c", "0A40"])
         '['ਜ', 'ੀ']'
     """
-    encoded_list = []
-    for string in strings:
-        encoded_list.append(chr(int(string, 16)))
 
-    return encoded_list
+    return [chr(int(string, 16)) for string in strings]
