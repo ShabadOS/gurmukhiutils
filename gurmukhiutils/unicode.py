@@ -12,7 +12,7 @@ def unicode(
     Converts any ascii gurmukhi characters and sanitizes to unicode gurmukhi.
 
     Note:
-        Converting yayya (ਯ) variants with an open-top using the Unicode Consortium standard is considered destructive. This function will substitute the original with it's shirorekha/top-line equivalent.
+        Converting yayya (ਯ) variants with an open top using the Unicode Consortium standard is considered destructive. This function will substitute the original with it's shirorekha/top-line equivalent.
 
         Many fonts and text shaping engines fail to render half-yayya (੍ਯ) correctly. Regardless of the standard used, it is recommended to use the Sant Lipi font mentioned below.
 
@@ -35,98 +35,139 @@ def unicode(
         'ਗੁਰੂ'
     """
 
+    # Font mapping
     # AnmolLipi/GurbaniAkhar & GurbaniLipi by Kulbir S. Thind, MD
-    ASCII_TO_UNICODE_MAP = {
-        "a": "ੳ",
-        "b": "ਬ",
-        "c": "ਚ",
-        "d": "ਦ",
-        "e": "ੲ",
-        "f": "ਡ",
-        "g": "ਗ",
-        "h": "ਹ",
-        "i": "ਿ",
-        "j": "ਜ",
-        "k": "ਕ",
-        "l": "ਲ",
-        "m": "ਮ",
-        "n": "ਨ",
-        "o": "ੋ",
-        "p": "ਪ",
-        "q": "ਤ",
-        "r": "ਰ",
-        "s": "ਸ",
-        "t": "ਟ",
-        "u": "ੁ",
-        "v": "ਵ",
-        "w": "ਾ",
-        "x": "ਣ",
-        "y": "ੇ",
-        "z": "ਜ਼",
-        "A": "ਅ",
-        "B": "ਭ",
-        "C": "ਛ",
-        "D": "ਧ",
-        "E": "ਓ",
-        "F": "ਢ",
-        "G": "ਘ",
-        "H": "੍ਹ",
-        "I": "ੀ",
-        "J": "ਝ",
-        "K": "ਖ",
-        "L": "ਲ਼",
-        "M": "ੰ",
-        "N": "ਂ",
-        "O": "ੌ",
-        "P": "ਫ",
-        "Q": "ਥ",
-        "R": "੍ਰ",
-        "S": "ਸ਼",
-        "T": "ਠ",
-        "U": "ੂ",
-        "V": "ੜ",
-        "W": "ਾਂ",
-        "X": "ਯ",
-        "Y": "ੈ",
-        "Z": "ਗ਼",
-        "0": "੦",
-        "1": "੧",
-        "2": "੨",
-        "3": "੩",
-        "4": "੪",
-        "5": "੫",
-        "6": "੬",
-        "7": "੭",
-        "8": "੮",
-        "9": "੯",
-        "[": "।",
-        "]": "॥",
-        "\\": "ਞ",
-        "|": "ਙ",
-        "`": "ੱ",
-        "~": "ੱ",
-        "@": "ੑ",
-        "^": "ਖ਼",
-        "&": "ਫ਼",
-        "†": "੍ਟ",  # dagger symbol
-        "ü": "ੁ",  # u-diaeresis letter
-        "®": "੍ਰ",  # registered symbol
-        "\u00b4": "ੵ",  # acute accent (´)
-        "\u00a8": "ੂ",  # diaeresis accent (¨)
-        "µ": "ੰ",  # mu letter
-        "æ": "਼",
-        "\u00a1": "ੴ",  # inverted exclamation (¡)
-        "ƒ": "ਨੂੰ",  # florin symbol
-        "œ": "੍ਤ",
-        "Í": "੍ਵ",  # capital i-acute letter
-        "Î": "੍ਯ",  # capital i-circumflex letter
-        "Ï": "ੵ",  # capital i-diaeresis letter
-        "Ò": "॥",  # capital o-grave letter
-        "Ú": "ਃ",  # capital u-acute letter
-        "\u02c6": "ਂ",  # circumflex accent (ˆ)
-        "\u02dc": "੍ਨ",  # small tilde (˜)
+    # OpenGurbaniAkhar by Sarabveer Singh (GurbaniNow)
+    ASCII_TO_SL_TRANSLATION = {
+        ord("a"): "ੳ",
+        ord("b"): "ਬ",
+        ord("c"): "ਚ",
+        ord("d"): "ਦ",
+        ord("e"): "ੲ",
+        ord("f"): "ਡ",
+        ord("g"): "ਗ",
+        ord("h"): "ਹ",
+        ord("i"): "ਿ",
+        ord("j"): "ਜ",
+        ord("k"): "ਕ",
+        ord("l"): "ਲ",
+        ord("m"): "ਮ",
+        ord("n"): "ਨ",
+        ord("o"): "ੋ",
+        ord("p"): "ਪ",
+        ord("q"): "ਤ",
+        ord("r"): "ਰ",
+        ord("s"): "ਸ",
+        ord("t"): "ਟ",
+        ord("u"): "ੁ",
+        ord("v"): "ਵ",
+        ord("w"): "ਾ",
+        ord("x"): "ਣ",
+        ord("y"): "ੇ",
+        ord("z"): "ਜ਼",
+        ord("A"): "ਅ",
+        ord("B"): "ਭ",
+        ord("C"): "ਛ",
+        ord("D"): "ਧ",
+        ord("E"): "ਓ",
+        ord("F"): "ਢ",
+        ord("G"): "ਘ",
+        ord("H"): "੍ਹ",
+        ord("I"): "ੀ",
+        ord("J"): "ਝ",
+        ord("K"): "ਖ",
+        ord("L"): "ਲ਼",
+        ord("M"): "ੰ",
+        ord("N"): "ਂ",
+        ord("O"): "ੌ",
+        ord("P"): "ਫ",
+        ord("Q"): "ਥ",
+        ord("R"): "੍ਰ",
+        ord("S"): "ਸ਼",
+        ord("T"): "ਠ",
+        ord("U"): "ੂ",
+        ord("V"): "ੜ",
+        ord("W"): "ਾਂ",
+        ord("X"): "ਯ",
+        ord("Y"): "ੈ",
+        ord("Z"): "ਗ਼",
+        ord("0"): "੦",
+        ord("1"): "੧",
+        ord("2"): "੨",
+        ord("3"): "੩",
+        ord("4"): "੪",
+        ord("5"): "੫",
+        ord("6"): "੬",
+        ord("7"): "੭",
+        ord("8"): "੮",
+        ord("9"): "੯",
+        ord("["): "।",
+        ord("]"): "॥",
+        ord("\\"): "ਞ",
+        ord("|"): "ਙ",
+        ord("`"): "ੱ",
+        ord("~"): "ੱ",
+        ord("@"): "ੑ",
+        ord("^"): "ਖ਼",
+        ord("&"): "ਫ਼",
+        ord("†"): "੍ਟ",  # dagger symbol
+        ord("ü"): "ੁ",  # u-diaeresis letter
+        ord("®"): "੍ਰ",  # registered symbol
+        ord("\u00b4"): "ੵ",  # acute accent (´)
+        ord("\u00a8"): "ੂ",  # diaeresis accent (¨)
+        ord("µ"): "ੰ",  # mu letter
+        ord("æ"): "਼",
+        ord("\u00a1"): "ੴ",  # inverted exclamation (¡)
+        ord("ƒ"): "ਨੂੰ",  # florin symbol
+        ord("œ"): "੍ਤ",
+        ord("Í"): "੍ਵ",  # capital i-acute letter
+        ord("Î"): "੍ਯ",  # capital i-circumflex letter
+        ord("Ï"): "ੵ",  # capital i-diaeresis letter
+        ord("Ò"): "॥",  # capital o-grave letter
+        ord("Ú"): "ਃ",  # capital u-acute letter
+        ord("\u02c6"): "ਂ",  # circumflex accent (ˆ)
+        ord("\u02dc"): "੍ਨ",  # small tilde (˜)
         #
         #
+        # AnmolLipi/GurbaniAkhar mappings:
+        ord("§"): "੍ਹੂ",  # section symbol
+        ord("¤"): "ੱ",  # currency symbol
+        #
+        #
+        # GurbaniLipi mappings:
+        ord("ç"): "੍ਚ",  # c-cedilla letter
+        #
+        #
+        # AnmolLipi/GurbaniAkhar overriding GurbaniLipi mapping:
+        ord("Ç"): "☬",  # khanda instead of california state symbol
+        #
+        #
+        # Miscellaneous:
+        ord("\u201a"): "❁",  # single low-9 quotation (‚) mark
+        #
+        #
+        # Nullify
+        # Either the 2nd portion of ੴ or a symbol of USA:
+        ord("Æ"): None,
+        ord("Ø"): None,  # This is a topline / shirorekha (शिरोरेखा) extender
+        ord("ÿ"): None,  # This is the author Kulbir S Thind's stamp
+        ord("Œ"): None,  # Box drawing left flower
+        ord("‰"): None,  # Box drawing right flower
+        ord("Ó"): None,  # Box drawing top flower
+        ord("Ô"): None,  # Box drawing bottom flower
+        #
+        #
+        # Open Gurbani Akhar
+        # translate capital i-circumflex letter to indic one-sixteenth + yayya:
+        ord("Î"): "꠳ਯ",  # half-yayya
+        # translate i-diaeresis letter to indic one-eight + yayya:
+        ord("ï"): "꠴ਯ",  # open-top yayya
+        # translate i-circumflex letter to indic three-sixtenths + yayya:
+        ord("î"): "꠵ਯ",  # open-top half-yayya
+    }
+
+    # Ordered as such to supporth both font input methods
+    ASCII_TO_SL_REPLACEMENTS = {
         "<>": "ੴ",  # AnmolLipi/GurbaniAkhar variant
         "<": "ੴ",  # GurbaniLipi variant
         ">": "☬",  # GurbaniLipi variant
@@ -134,44 +175,15 @@ def unicode(
         "Åå": "ੴ",  # AnmolLipi/GurbaniAkhar variant
         "Å": "ੴ",  # GurbaniLipi variant
         "å": "ੴ",  # GurbaniLipi variant
-        #
-        #
-        # AnmolLipi/GurbaniAkhar mappings:
-        "§": "੍ਹੂ",  # section symbol
-        "¤": "ੱ",  # currency symbol
-        #
-        #
-        # GurbaniLipi mappings:
-        "ç": "੍ਚ",  # c-cedilla letter
-        #
-        #
-        # AnmolLipi/GurbaniAkhar overriding GurbaniLipi mapping:
-        "Ç": "☬",  # khanda instead of california state symbol
-        #
-        #
-        # Miscellaneous:
-        "\u201a": "❁",  # single low-9 quotation (‚) mark
-        #
-        #
-        # Nullify
-        "Æ": "",  # This is either the 2nd portion of ੴ or a symbol of USA. The ੴ renders correctly according to rules above.
-        "Ø": "",  # This is a topline / shirorekha (शिरोरेखा) extender
-        "ÿ": "",  # This is the author Kulbir S Thind's stamp
-        "Œ": "",  # Box drawing left flower
-        "‰": "",  # Box drawing right flower
-        "Ó": "",  # Box drawing top flower
-        "Ô": "",  # Box drawing bottom flower
     }
 
-    # OpenGurbaniAkhar by Sarabveer Singh (GurbaniNow)
-    SANT_LIPI_MAP = {
-        "Î": "꠳ਯ",  # replace capital i-circumflex letter with indic one-sixteenth + yayya = half-yayya
-        "੍ਯ": "꠳ਯ",  # replace unicode half-yayya with same as above
-        "ï": "꠴ਯ",  # replace i-diaeresis letter with indic one-eight + yayya = open-top full yayya
-        "î": "꠵ਯ",  # replace i-circumflex letter with indic three-sixtenths + yayya = open-top half-yayya
+    UNICODE_TO_SL_REPLACEMENTS = {
+        "੍ਯ": "꠳ਯ",  # replace unicode half-yayya with Sant Lipi ligature (north indic one-sixteenth fraction + yayya)
     }
 
-    SANT_LIPI_TO_STANDARD_MAP = {
+    # Sant Lipi to Unicode Consortium
+    # Avoiding a translation, in case these north indic fraction chars are used for what they're actually meant for
+    SL_TO_UNICODE_REPLACEMENTS = {
         "꠳ਯ": "੍ਯ",
         "꠴ਯ": "ਯ",
         "꠵ਯ": "੍ਯ",
@@ -182,20 +194,20 @@ def unicode(
     ASCII_SIHARI_PATTERN = rf"(i)([{ASCII_BASE_LETTERS}])"
     string = re.sub(ASCII_SIHARI_PATTERN, r"\2\1", string)
 
-    # Replace any ASCII with Unicode Gurmukhi
-    for key, value in ASCII_TO_UNICODE_MAP.items():
+    # Map any ASCII / Unicode Gurmukhi to Sant Lipi format
+    string = string.translate(ASCII_TO_SL_TRANSLATION)
+
+    for key, value in ASCII_TO_SL_REPLACEMENTS.items():
         string = string.replace(key, value)
 
-    for key, value in SANT_LIPI_MAP.items():
+    for key, value in UNICODE_TO_SL_REPLACEMENTS.items():
         string = string.replace(key, value)
 
     # Normalize Unicode
     string = unicode_normalize(string)
 
     if unicode_standard == "Unicode Consortium":
-
-        # Map Sant Lipi to Unicode Consortium
-        for key, value in SANT_LIPI_TO_STANDARD_MAP.items():
+        for key, value in SL_TO_UNICODE_REPLACEMENTS.items():
             string = string.replace(key, value)
 
     return string
