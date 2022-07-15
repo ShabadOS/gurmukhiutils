@@ -31,7 +31,7 @@ def unicode(
     """
 
     # AnmolLipi/GurbaniAkhar & GurbaniLipi by Kulbir S. Thind, MD
-    common_ascii_to_unicode_map = {
+    ASCII_TO_UNICODE_MAP = {
         "a": "ੳ",
         "b": "ਬ",
         "c": "ਚ",
@@ -159,7 +159,7 @@ def unicode(
     }
 
     # OpenGurbaniAkhar by Sarabveer Singh (GurbaniNow)
-    special_sant_lipi_map = {
+    SANT_LIPI_MAP = {
         "Î": "\ueeec",  # replace capital i-circumflex letter, half-yayya
         "੍ਯ": "\ueeec",  # replace unicode half-yayya
         "î": "\ueeee",  # i-circumflex letter, open-top half-yayya
@@ -176,7 +176,7 @@ def unicode(
         "\u2089": "\uee89",  # missing subscript 9 (₉)
     }
 
-    sant_lipi_to_unicode_compliant_map = {
+    SANT_LIPI_TO_STANDARD_MAP = {
         "\ueeec": "੍ਯ",
         "\ueeee": "੍ਯ",
         "\ueeef": "ਯ",
@@ -194,15 +194,15 @@ def unicode(
     }
 
     # Move ASCII sihari before mapping to unicode
-    ascii_base_letters = "a-zA-Z\\|^&Îîï"
-    pattern = r"(i)([" + ascii_base_letters + "])"
-    string = re.sub(pattern, r"\2\1", string)
+    ASCII_BASE_LETTERS = "a-zA-Z\\|^&Îîï"
+    ASCII_SIHARI_PATTERN = r"(i)([" + ASCII_BASE_LETTERS + "])"
+    string = re.sub(ASCII_SIHARI_PATTERN, r"\2\1", string)
 
     # Replace any ASCII with Unicode Gurmukhi
-    for key, value in common_ascii_to_unicode_map.items():
+    for key, value in ASCII_TO_UNICODE_MAP.items():
         string = string.replace(key, value)
 
-    for key, value in special_sant_lipi_map.items():
+    for key, value in SANT_LIPI_MAP.items():
         string = string.replace(key, value)
 
     # Normalize Unicode
@@ -211,7 +211,7 @@ def unicode(
     if unicode_standard == "Unicode Consortium":
 
         # Map Sant Lipi to Unicode Consortium
-        for key, value in sant_lipi_to_unicode_compliant_map.items():
+        for key, value in SANT_LIPI_TO_STANDARD_MAP.items():
             string = string.replace(key, value)
 
         """
@@ -275,7 +275,7 @@ def sort_diacritics(string: str) -> str:
 
     Subjoined letters are constructed (they are not single char), so they cannot be used in the same regex group pattern. See further below for subjoined letters.
     """
-    nukta_udaat_yakash_order_list = [
+    BASE_LETTER_MODIFIERS = [
         "਼",
         "ੑ",
         "ੵ",
@@ -288,7 +288,7 @@ def sort_diacritics(string: str) -> str:
 
     https://www.unicode.org/versions/Unicode14.0.0/ch12.pdf
     """
-    vowel_order_list = [
+    VOWEL_ORDER = [
         "ਿ",
         "ੇ",
         "ੈ",
@@ -303,7 +303,7 @@ def sort_diacritics(string: str) -> str:
     """
     The remaining diacritics are to be sorted at the end according to the following order
     """
-    remaining_diacritic_order_list = [
+    REMAINING_MODIFIER_ORDER = [
         "ਁ",
         "ੱ",
         "ਂ",
@@ -319,49 +319,47 @@ def sort_diacritics(string: str) -> str:
 
     The patterns for the single-chars and the subjoined letters:
     """
-    generated_single_chars = "".join(
-        nukta_udaat_yakash_order_list
-        + vowel_order_list
-        + remaining_diacritic_order_list
+    GENERATED_MARKS = "".join(
+        BASE_LETTER_MODIFIERS + VOWEL_ORDER + REMAINING_MODIFIER_ORDER
     )
-    d_pattern = "([" + generated_single_chars + "]*)"
+    MARK_PATTERN = "([" + GENERATED_MARKS + "]*)"
 
-    subjoin_constructor = "੍"
-    subjoin_consonants = "ਹਰਵਟਤਨਚ"
-    s_pattern = "(" + subjoin_constructor + "[" + subjoin_consonants + "])?"
+    VIRAMA = "੍"
+    BELOW_BASE_LETTERS = "ਹਰਵਟਤਨਚ"
+    BELOW_BASE_PATTERN = "(" + VIRAMA + "[" + BELOW_BASE_LETTERS + "])?"
 
     """
     The following regex will capture all sequential diacritics containing at most one subjoined letter.
-        >>> print(regex_match_pattern)
+        >>> print(REGEX_MATCH_PATTERN)
         '([਼ੵਿੇੈੋੌੁੂਾੀਁੱਂੰਃ]*)(੍[ਹਰਵਟਤਨਚ])?([਼ੵਿੇੈੋੌੁੂਾੀਁੱਂੰਃ]*)'
     """
-    regex_match_pattern = d_pattern + s_pattern + d_pattern
+    REGEX_MATCH_PATTERN = MARK_PATTERN + BELOW_BASE_PATTERN + MARK_PATTERN
 
     """
     This generates a string of the order in which all diacritics should appear.
-        >>> print(generated_diacritic_order)
+        >>> print(GENERATED_MATCH_ORDER)
         '਼ਹਰਵਟਤਨਚਿੇੈੋੌੁੂਾੀਁੱਂੰਃ'
    """
-    generated_diacritic_order = "".join(
-        nukta_udaat_yakash_order_list
-        + [subjoin_constructor]
-        + [subjoin_consonants]
-        + vowel_order_list
-        + remaining_diacritic_order_list
+    GENERATED_MATCH_ORDER = "".join(
+        BASE_LETTER_MODIFIERS
+        + [VIRAMA]
+        + [BELOW_BASE_LETTERS]
+        + VOWEL_ORDER
+        + REMAINING_MODIFIER_ORDER
     )
 
     def regex_sort_func(match: Match) -> str:
         """
-        This re-arranges characters in "match" according to a custom sort order "generated_diacritic_order"
+        This re-arranges characters in "match" according to a custom sort order "GENERATED_MATCH_ORDER"
         """
         if len(match := match.group()) > 1:
-            match = sorted(match, key=lambda e: generated_diacritic_order.index(e))
+            match = sorted(match, key=lambda e: GENERATED_MATCH_ORDER.index(e))
             match = "".join(match)
 
         return match
 
     string = re.sub(
-        regex_match_pattern,
+        REGEX_MATCH_PATTERN,
         regex_sort_func,
         string,
     )
@@ -374,7 +372,7 @@ def sanitize_unicode(string: str) -> str:
     Use single char representations of constructed characters.
     """
 
-    unicode_sanitization_map = {
+    UNICODE_SANITIZATION_MAP = {
         "\u0a73\u0a4b": "\u0a13",  # ਓ
         "\u0a05\u0a3e": "\u0a06",  # ਅ + ਾ = ਆ
         "\u0a72\u0a3f": "\u0a07",  # ਇ
@@ -393,7 +391,7 @@ def sanitize_unicode(string: str) -> str:
         "\u0a71\u0a02": "\u0a01",  # ਁ adak bindi (quite literally never used today or in the Shabad OS Database, only included for parity with the Unicode block)
     }
 
-    for key, value in unicode_sanitization_map.items():
+    for key, value in UNICODE_SANITIZATION_MAP.items():
         string = string.replace(key, value)
 
     return string
