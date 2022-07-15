@@ -1,6 +1,10 @@
 # Gurmukhi Utils (Python)
 
-A utilities library for converting, analyzing, and testing Gurmukhi strings. Ported to Python from [`gurmukhi-utils`](https://github.com/shabados/gurmukhi-utils).
+Python utilities library for converting, analyzing, and testing Gurmukhi strings. This project is an original work inspired by the JavaScript library [`gurmukhi-utils`](https://github.com/shabados/gurmukhi-utils).
+
+## WIP
+
+This library is a work in progress! Note that the API can change unexpectedly when upgrading. It will not be using [SemVer](https://semver.org/) until version 1.0.0. Please do not use for critical projects yet.
 
 ## Contributing
 
@@ -8,6 +12,15 @@ Requirements:
 
 - [Python](https://www.python.org/) (see version in `pyproject.toml`)
 - [Poetry](https://python-poetry.org/)
+
+Workflow:
+
+- Fork this repository
+- Create a branch from `main`
+- Make any changes
+- Submit a pull request
+
+Note: Before creating new branches, ensuring that the forked `main` is up to date with the upstream/original `main` will ease workflow.
 
 Development:
 
