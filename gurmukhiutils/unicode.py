@@ -179,7 +179,7 @@ def unicode(
 
     # Move ASCII sihari before mapping to unicode
     ASCII_BASE_LETTERS = "a-zA-Z\\|^&Îîï"
-    ASCII_SIHARI_PATTERN = r"(i)([" + ASCII_BASE_LETTERS + "])"
+    ASCII_SIHARI_PATTERN = rf"(i)([{ASCII_BASE_LETTERS}])"
     string = re.sub(ASCII_SIHARI_PATTERN, r"\2\1", string)
 
     # Replace any ASCII with Unicode Gurmukhi
@@ -295,18 +295,18 @@ def sort_diacritics(string: str) -> str:
     GENERATED_MARKS = "".join(
         BASE_LETTER_MODIFIERS + VOWEL_ORDER + REMAINING_MODIFIER_ORDER
     )
-    MARK_PATTERN = "([" + GENERATED_MARKS + "]*)"
+    MARK_PATTERN = f"([{GENERATED_MARKS}]*)"
 
     VIRAMA = "੍"
     BELOW_BASE_LETTERS = "ਹਰਵਟਤਨਚ"
-    BELOW_BASE_PATTERN = "(" + VIRAMA + "[" + BELOW_BASE_LETTERS + "])?"
+    BELOW_BASE_PATTERN = f"({VIRAMA}[{BELOW_BASE_LETTERS}])?"
 
     """
     The following regex will capture all sequential diacritics containing at most one subjoined letter.
         >>> print(REGEX_MATCH_PATTERN)
         '([਼ੵਿੇੈੋੌੁੂਾੀਁੱਂੰਃ]*)(੍[ਹਰਵਟਤਨਚ])?([਼ੵਿੇੈੋੌੁੂਾੀਁੱਂੰਃ]*)'
     """
-    REGEX_MATCH_PATTERN = MARK_PATTERN + BELOW_BASE_PATTERN + MARK_PATTERN
+    REGEX_MATCH_PATTERN = f"{MARK_PATTERN}{BELOW_BASE_PATTERN}{MARK_PATTERN}"
 
     """
     This generates a string of the order in which all diacritics should appear.
