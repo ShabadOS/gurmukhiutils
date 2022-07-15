@@ -325,11 +325,11 @@ def sort_diacritics(string: str) -> str:
         """
         This re-arranges characters in "match" according to a custom sort order "GENERATED_MATCH_ORDER"
         """
-        if len(match := match.group()) > 1:
-            match = sorted(match, key=lambda e: GENERATED_MATCH_ORDER.index(e))
-            match = "".join(match)
+        if len(_match := match.group()) > 1:
+            _match = sorted(_match, key=lambda e: GENERATED_MATCH_ORDER.index(e))
+            _match = "".join(_match)
 
-        return match
+        return _match
 
     string = re.sub(
         REGEX_MATCH_PATTERN,
