@@ -1,6 +1,7 @@
-def triple_unicode(string: str) -> str:
-    from gurmukhiutils.unicode import unicode
+from gurmukhiutils.unicode import unicode
 
+
+def triple_unicode(string: str) -> str:
     return unicode(unicode(unicode(string)))
 
 
@@ -119,8 +120,6 @@ def test_unicode_ascii_conversions_subscripts():
 
 
 def test_unicode_yayya():
-    from gurmukhiutils.unicode import unicode
-
     unicode_compliant_assertions = {
         # Yayya with or without diacritics renders correctly.
         "XkIN": "ਯਕੀਂ",

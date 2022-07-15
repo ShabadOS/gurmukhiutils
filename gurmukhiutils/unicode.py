@@ -1,3 +1,4 @@
+import re
 from typing import Literal, Match
 
 UNICODE_STANDARDS = Literal["Unicode Consortium", "Sant Lipi"]
@@ -28,8 +29,6 @@ def unicode(
         >>> unicode("gurU")
         'ਗੁਰੂ'
     """
-
-    import re
 
     # AnmolLipi/GurbaniAkhar & GurbaniLipi by Kulbir S. Thind, MD
     common_ascii_to_unicode_map = {
@@ -210,7 +209,6 @@ def unicode(
     string = unicode_normalize(string)
 
     if unicode_standard == "Unicode Consortium":
-        import re
 
         # Map Sant Lipi to Unicode Consortium
         for key, value in sant_lipi_to_unicode_compliant_map.items():
@@ -269,8 +267,6 @@ def sort_diacritics(string: str) -> str:
         >>> sort_diacritics("\u0a41\u0a4b") == "\u0a4b\u0a41"  # ੁੋ vs  ੋੁ
         True
     """
-
-    import re
 
     """
     Nukta is essential to form a new base letter and must be ordered first.
