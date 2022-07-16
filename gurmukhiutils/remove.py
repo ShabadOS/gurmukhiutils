@@ -1,3 +1,8 @@
+import re
+
+from gurmukhiutils.constants import VISHRAMS
+
+
 def remove(string: str, removals: list) -> str:
     """
     Removes substrings from string.
@@ -46,8 +51,6 @@ def remove_regex(string: str, patterns: list) -> str:
         >>> remove_regex("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", [".+\\s"])
         'ਸਬਦ'
     """
-
-    import re
 
     try:
         patterns[0].split()
@@ -104,7 +107,5 @@ def remove_vishrams(string: str) -> str:
         >>> remove_vishrams("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ ॥")
         'ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ ॥'
     """
-
-    from gurmukhiutils.constants import VISHRAMS
 
     return remove(string, VISHRAMS)

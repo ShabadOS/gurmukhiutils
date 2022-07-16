@@ -1,6 +1,8 @@
-def test_remove_vishrams():
-    from gurmukhiutils.remove import remove_vishrams
+from gurmukhiutils.constants import VISHRAM_HEAVY, VISHRAM_LIGHT, VISHRAM_MEDIUM
+from gurmukhiutils.remove import remove, remove_line_endings, remove_vishrams
 
+
+def test_remove_vishrams():
     assertions = {
         "ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ ॥": "ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ ॥",
         "sbd, sbd sbd; sbd ]": "sbd sbd sbd sbd ]",
@@ -12,13 +14,6 @@ def test_remove_vishrams():
 
 
 def test_remove_vishram():
-    from gurmukhiutils.constants import (
-        VISHRAM_HEAVY,
-        VISHRAM_LIGHT,
-        VISHRAM_MEDIUM,
-    )
-    from gurmukhiutils.remove import remove
-
     heavy_assertions = {
         "sbd, sbd sbd; sbd ]": "sbd, sbd sbd sbd ]",
         "ਸਬਦ. ਸਬਦ; ਸਬਦ ਸਬਦ ॥": "ਸਬਦ. ਸਬਦ ਸਬਦ ਸਬਦ ॥",
@@ -53,8 +48,6 @@ def test_remove_vishram():
 
 
 def test_remove_line_endings():
-    from gurmukhiutils.remove import remove_line_endings
-
     assertions = {
         # ignore:
         "ਮਹਲਾ ੧": "ਮਹਲਾ ੧",
