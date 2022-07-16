@@ -12,11 +12,7 @@ def test_remove_vishrams():
 
 
 def test_remove_vishram():
-    from gurmukhiutils.constants import (
-        VISHRAM_HEAVY,
-        VISHRAM_LIGHT,
-        VISHRAM_MEDIUM,
-    )
+    from gurmukhiutils.constants import VISHRAM_HEAVY, VISHRAM_LIGHT, VISHRAM_MEDIUM
     from gurmukhiutils.remove import remove
 
     heavy_assertions = {
