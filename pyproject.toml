@@ -1,3 +1,7 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "gurmukhiutils"
 version = "0.1.0"
@@ -24,7 +28,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">= 3.10, < 3.11"
+python = "^3.10"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
@@ -35,10 +39,6 @@ pytest = "^6.2"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/shabados/gurmukhiutils/issues"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 known_first_party = "gurmukhiutils"
