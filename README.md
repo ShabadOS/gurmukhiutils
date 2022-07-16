@@ -28,9 +28,21 @@ Development:
 - Automatically format/lint when committing by enabling pre-commit hooks with `poetry run pre-commit install`.
 - Run tests with `poetry run pytest`.
 
-Note 1: The optional extensions in VS Code may help you.
+Note: Select the Python Interpreter in VS Code to access dev dependencies.
 
-Note 2:  If you don't enable the pre-commit hooks, please manually run the related commands in `.pre-commit-config.yaml` before submitting each and every PR.
+Note: The optional extensions in VS Code may help you.
+
+Note: If you don't enable the pre-commit hooks, please manually run the related commands in `.pre-commit-config.yaml` before submitting each and every PR.
+
+## Maintaining
+
+**Merging**
+
+- Pull requests should be squashed or rebased.
+- Commit messages should generally conform to [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/).
+  - Valid _types_ include: `BREAK`, `feat`, `fix`, `nv`, which correlate with MAJOR, MINOR, PATCH, and no variation in [Semantic Versioning](https://semver.org/).
+
+Note: It is possible to run pytest on any branch using the Actions tab.
 
 ## Todo
 
