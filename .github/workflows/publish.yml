@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  POETRY_PYPI_TOKEN_PYPI: ${{ POETRY_PYPI_TOKEN_PYPI }}
+  POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
 
 jobs:
   publish:
