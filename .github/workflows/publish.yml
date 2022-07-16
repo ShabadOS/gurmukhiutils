@@ -1,6 +1,12 @@
 name: Publish
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+env:
+  POETRY_PYPI_TOKEN_PYPI: ${{ POETRY_PYPI_TOKEN_PYPI }}
 
 jobs:
   publish:
