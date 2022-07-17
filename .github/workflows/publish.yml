@@ -30,4 +30,4 @@ jobs:
 
       - run: VERSION=$(poetry version --short)
 
-      - run: gh release create $VERSION ./dist/* --title "v$VERSION"
+      - run: gh release create "v$VERSION" ./dist/*
