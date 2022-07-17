@@ -61,42 +61,54 @@ jobs:
           if [[ -z "$NEXT" ]]; then
             METHOD="programmatic"
 
-            # Get length/count of longest commit type
-            TYPE_LENGTH=$(awk '{ if (length($0) > max) {max = length($0); maxline = $0} } END { print max }' types.txt)
+            # Determine which version number to bump
+            BUMP_TYPE="nv" # Meaning non-versioning commit, or affecting something outside the API. Basically ignore the types: build, chore, ci, docs, perf, refactor, revert, style, test.
+            while IFS= read -r TYPE; do
+              if [[ "$TYPE" == "BREAK" ]]; then
+                BUMP_TYPE="major"
+                break
+              elif [[ "$BUMP_TYPE" != "minor" ]]
+                if [[ "$TYPE" == "feat" ]]; then
+                  BUMP_TYPE="minor"
+                elif [[ "$TYPE" == "fix" ]]; then
+                  BUMP_TYPE="patch"
+            done < types.txt
 
-            # Instantiate version variables
+            # Instantiate version numbers
             IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
 
-            # Get version bump for next release
-            if [ $TYPE_LENGTH == 5 ]; then
-              # BREAK
+            # Get version number for next release
+            if [ "$BUMP_TYPE" == "major" ]; then
+              # Backwards incompatible API changes
               NEXT="$((MAJOR+1)).0.0"
-            elif [ $TYPE_LENGTH == 4 ]; then
-              # feat
+            elif [ "$BUMP_TYPE" == "minor" ]; then
+              # Backwards compatible API additions/changes
               NEXT="$MAJOR.$((MINOR+1)).0"
-            elif [ $TYPE_LENGTH == 3 ]; then
-              # fix
+            elif [ "$BUMP_TYPE" == "patch" ]; then
+              # Bug fixes not affecting the API
               NEXT="$MAJOR.$MINOR.$((PATCH+1))"
+            else
+              NEXT=$VERSION
             fi
           fi
 
-          # Create body of Pull Request
-          echo "### History" >> subjects.txt
-          echo "" >> subjects.txt
-          echo "Next: $NEXT ($METHOD)" >> subjects.txt
-          echo "Latest: $VERSION" >> subjects.txt
-          echo "### Release" >> subjects.txt
-          # Reverses all lines in subjects.txt
-          tac subjects.txt > temp.txt
-          BODY=$(cat temp.txt)
-
-          # Clean up files
-          rm log.txt
-          rm subjects.txt
-          rm types.txt
-          rm temp.txt
-
           if [[ "$VERSION" != "$NEXT" ]]; then
+            # Create body of Pull Request
+            echo "### History" >> subjects.txt
+            echo "" >> subjects.txt
+            echo "Next: $NEXT ($METHOD)" >> subjects.txt
+            echo "Latest: $VERSION" >> subjects.txt
+            echo "### Release" >> subjects.txt
+            # Reverses all lines in subjects.txt
+            tac subjects.txt > temp.txt
+            BODY=$(cat temp.txt)
+
+            # Clean up files
+            rm log.txt
+            rm subjects.txt
+            rm types.txt
+            rm temp.txt
+
             # Bump version in pyproject.toml
             sed -i "s/version = \"$VERSION\"/version = \"$NEXT\"/g" pyproject.toml
 
