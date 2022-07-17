@@ -72,6 +72,8 @@ jobs:
                   BUMP_TYPE="minor"
                 elif [[ "$TYPE" == "fix" ]]; then
                   BUMP_TYPE="patch"
+                fi
+              fi
             done < types.txt
 
             # Instantiate version numbers
