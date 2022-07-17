@@ -67,7 +67,7 @@ jobs:
               if [[ "$TYPE" == "BREAK" ]]; then
                 BUMP_TYPE="major"
                 break
-              elif [[ "$BUMP_TYPE" != "minor" ]]
+              elif [[ "$BUMP_TYPE" != "minor" ]]; then
                 if [[ "$TYPE" == "feat" ]]; then
                   BUMP_TYPE="minor"
                 elif [[ "$TYPE" == "fix" ]]; then
