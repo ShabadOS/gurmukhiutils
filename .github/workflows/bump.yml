@@ -1,0 +1,120 @@
+name: Increment Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      next-version:
+        description: "override with custom version number"
+        required: false
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - run: pipx install poetry
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.x'
+          cache: 'poetry'
+
+      - run: poetry install
+
+      - name: Run bash script
+        shell: bash
+        run: |
+          # Gather new git history from after the last release
+          git log --format="%s" > log.txt
+          touch subjects.txt
+          touch types.txt
+          while IFS= read -r LINE; do
+            # Read line until colon symbol ( : )
+            SUBJECT_TYPE=$(echo $LINE | awk -F: '{print $1}')
+
+            # Stop iterating git log when reaching latest release
+            if [[ $SUBJECT_TYPE == 'release' ]]; then
+              break
+            fi
+
+            # Else continue saving subjects and commit types
+            echo "- $LINE" >> subjects.txt
+            echo $SUBJECT_TYPE >> types.txt
+          done < log.txt
+
+
+          # Save current release's version
+          VERSION=$(poetry version --short)
+
+
+          # Decide if automatically finding next version or if manually provided one by user
+          NEXT="${{ github.event.inputs.next-version }}"
+
+          if [[ -z "$NEXT" ]]; then
+            # Get length/count of longest commit type
+            TYPE_LENGTH=$(awk '{ if (length($0) > max) {max = length($0); maxline = $0} } END { print max }' types.txt)
+
+            # Instantiate version variables
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+
+            # Get version bump for next release
+            if [ $TYPE_LENGTH == 5 ]; then
+              # BREAK
+              NEXT="$((MAJOR+1)).0.0"
+            elif [ $TYPE_LENGTH == 4 ]; then
+              # feat
+              NEXT="$MAJOR.$((MINOR+1)).0"
+            elif [ $TYPE_LENGTH == 3 ]; then
+              # fix
+              NEXT="$MAJOR.$MINOR.$((PATCH+1))"
+            fi
+          fi
+
+          # Create body of Pull Request
+          echo "### History" >> subjects.txt
+          echo "" >> subjects.txt
+          echo "Next: $NEXT" >> subjects.txt
+          echo "Latest: $VERSION" >> subjects.txt
+          echo "### Release" >> subjects.txt
+          # Reverses all lines in subjects.txt
+          tac subjects.txt > temp.txt
+          BODY=$(cat temp.txt)
+
+          # Clean up files
+          rm log.txt
+          rm subjects.txt
+          rm types.txt
+          rm temp.txt
+
+          if [[ "$VERSION" != "$NEXT" ]]; then
+            # Bump version in pyproject.toml
+            sed -i "s/version = \"$VERSION\"/version = \"$NEXT\"/g" pyproject.toml
+
+            # Set up git config for github-actions bot
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
+
+            # Set author to the user running workflow
+            AUTHOR="${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+
+            # Checkout new branch
+            git checkout -B "release-$NEXT"
+
+            # Commit pyproject.toml
+            git add pyproject.toml
+            git commit -m "release: bump poetry version in pyproject.toml" --author="$AUTHOR"
+
+            # Push branch
+            git push --set-upstream origin "release-$NEXT" --atomic
+
+            # Open Pull Request
+            gh pr create --base "main" --title "release: increment version from $VERSION to $NEXT" --body "$BODY"
+          fi
+
