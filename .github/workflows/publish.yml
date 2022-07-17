@@ -28,6 +28,6 @@ jobs:
 
       - run: poetry publish
 
-      - run: VERSION=$(poetry version --short)
+      - run: echo 'VERSION='$(poetry version --short) >> $GITHUB_ENV
 
-      - run: gh release create "v$VERSION" ./dist/*
+      - run: gh release create "v$VERSION" ./dist/* --title "v$VERSION"
