@@ -54,10 +54,13 @@ jobs:
           VERSION=$(poetry version --short)
 
 
-          # Decide if automatically finding next version or if manually provided one by user
+          # Decide if programmatically finding next version or if manually provided one by user
+          METHOD="manual"
           NEXT="${{ github.event.inputs.next-version }}"
 
           if [[ -z "$NEXT" ]]; then
+            METHOD="programmatic"
+
             # Get length/count of longest commit type
             TYPE_LENGTH=$(awk '{ if (length($0) > max) {max = length($0); maxline = $0} } END { print max }' types.txt)
 
@@ -80,7 +83,7 @@ jobs:
           # Create body of Pull Request
           echo "### History" >> subjects.txt
           echo "" >> subjects.txt
-          echo "Next: $NEXT" >> subjects.txt
+          echo "Next: $NEXT ($METHOD)" >> subjects.txt
           echo "Latest: $VERSION" >> subjects.txt
           echo "### Release" >> subjects.txt
           # Reverses all lines in subjects.txt
