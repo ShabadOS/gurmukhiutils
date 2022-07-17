@@ -7,6 +7,7 @@ on:
 
 env:
   POETRY_PYPI_TOKEN_PYPI: ${{ secrets.POETRY_PYPI_TOKEN_PYPI }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   publish:
@@ -26,3 +27,7 @@ jobs:
       - run: poetry build
 
       - run: poetry publish
+
+      - run: VERSION=$(poetry version --short)
+
+      - run: gh release create $VERSION ./dist/* --title "v$VERSION"
