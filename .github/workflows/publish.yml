@@ -30,4 +30,4 @@ jobs:
 
       - run: echo 'VERSION='$(poetry version --short) >> $GITHUB_ENV
 
-      - run: gh release create "v$VERSION" ./dist/* --title "v$VERSION"
+      - run: gh release create "v$VERSION" ./dist/* --title "v$VERSION" --notes "Published on [PyPI](https://pypi.org/project/gurmukhiutils/)."
