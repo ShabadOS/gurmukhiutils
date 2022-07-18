@@ -1,57 +1,53 @@
-# Gurmukhi Utils (Python)
+# Gurmukhi Utils
 
-Python utilities library for converting, analyzing, and testing Gurmukhi strings. This project is an original work inspired by the JavaScript library [`gurmukhi-utils`](https://github.com/shabados/gurmukhi-utils).
+Python utilities library for converting, analyzing, and testing Gurmukhi strings. This project is an original work inspired by the JavaScript library [gurmukhi-utils](https://github.com/shabados/gurmukhi-utils).
 
 ## WIP
 
 This library is a work in progress! Note that the API can change unexpectedly when upgrading. It will not be using [SemVer](https://semver.org/) until version 1.0.0. Please do not use for critical projects yet.
 
-## Contributing
+## Installation
 
-Requirements:
+```shell
+pip3 install gurmukhiutils
+```
 
-- [Python](https://www.python.org/) (see version in `pyproject.toml`)
-- [Poetry](https://python-poetry.org/)
+```shell
+poetry add gurmukhiutils
+```
 
-Workflow:
+## Usage
 
-- Fork this repository
-- Create a branch from `main`
-- Make any changes
-- Submit a pull request
+This is a cursory overview of the functions available. To learn more, see any function's docstring in the source code.
 
-Note: Before creating new branches, ensuring that the forked `main` is up to date with the upstream/original `main` will ease workflow.
+**Module `gurmukhiutils.unicode`**
 
-Development:
+- `unicode` - Converts any ascii gurmukhi characters and sanitizes to unicode gurmukhi.
+- `unicode_normalize` - Normalizes Gurmukhi according to Unicode Standards.
+- `sort_diacritics` - Orders the gurmukhi diacritics in a string according to Unicode standards.
+- `sanitize_unicode` - Use single char representations of constructed characters.
 
-- Install project dependencies with `poetry install`.
-- Automatically format/lint when committing by enabling pre-commit hooks with `poetry run pre-commit install`.
-- Run tests with `poetry run pytest`.
+**Module `gurmukhiutils.remove`**
 
-Note: Select the Python Interpreter in VS Code to access dev dependencies.
+- `remove` - Removes substrings from string.
+- `remove_regex` - Removes regex patterns from string.
+- `remove_line_endings` - Attempts to remove line endings as best as possible.
+- `remove_vishrams` - Removes all vishram characters.
 
-Note: The optional extensions in VS Code may help you.
+**Example**
 
-Note: If you don't enable the pre-commit hooks, please manually run the related commands in `.pre-commit-config.yaml` before submitting each and every PR.
+```python
+>>> from gurmukhiutils import unicode
+>>> unicode("123")
+'੧੨੩'
 
-## Maintaining
+>>> unicode("gurU")
+'ਗੁਰੂ'
+```
 
-**Merging**
+## Contribute
 
-- Pull requests should be squashed or rebased.
-- Commit messages should generally conform to [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/).
-  - Valid _types_ include: `BREAK`, `feat`, `fix`, `nv`, which correlate with MAJOR, MINOR, PATCH, and no variation in [Semantic Versioning](https://semver.org/).
-
-Note: It is possible to run pytest on any branch using the Actions tab.
-
-## Todo
-
-Beyond the obvious implementation of features from the original `gurmukhi-utils` program:
-
-- GitHub workflows for pytest and making sure flake8/isort/black are passing on PR
-- Publishing on PyPi
-- Adding installation/usage docs for end-user
-- Possibly consider exporting a requirements.txt via poetry for pip using contributors (not needed for end-users).
+If you want to help, please get started with the [CONTRIBUTING.md](./CONTRIBUTING.md) doc.
 
 ## Community
 
