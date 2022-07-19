@@ -2,7 +2,7 @@ from gurmukhiutils.constants import VISHRAM_HEAVY, VISHRAM_LIGHT, VISHRAM_MEDIUM
 from gurmukhiutils.remove import remove, remove_line_endings, remove_vishrams
 
 
-def test_remove_vishrams():
+def test_remove_vishrams() -> None:
     assertions = {
         "ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ ॥": "ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ ॥",
         "sbd, sbd sbd; sbd ]": "sbd sbd sbd sbd ]",
@@ -13,7 +13,7 @@ def test_remove_vishrams():
         assert remove_vishrams(key) == value
 
 
-def test_remove_vishram():
+def test_remove_vishram() -> None:
     heavy_assertions = {
         "sbd, sbd sbd; sbd ]": "sbd, sbd sbd sbd ]",
         "ਸਬਦ. ਸਬਦ; ਸਬਦ ਸਬਦ ॥": "ਸਬਦ. ਸਬਦ ਸਬਦ ਸਬਦ ॥",
@@ -35,19 +35,19 @@ def test_remove_vishram():
     }
 
     for key, value in heavy_assertions.items():
-        assert remove(key, VISHRAM_HEAVY) == value
+        assert remove(key, [VISHRAM_HEAVY]) == value
 
     for key, value in medium_assertions.items():
-        assert remove(key, VISHRAM_MEDIUM) == value
+        assert remove(key, [VISHRAM_MEDIUM]) == value
 
     for key, value in light_assertions.items():
-        assert remove(key, VISHRAM_LIGHT) == value
+        assert remove(key, [VISHRAM_LIGHT]) == value
 
     for key, value in medium_and_heavy_assertions.items():
         assert remove(key, [VISHRAM_MEDIUM, VISHRAM_HEAVY]) == value
 
 
-def test_remove_line_endings():
+def test_remove_line_endings() -> None:
     assertions = {
         # ignore:
         "ਮਹਲਾ ੧": "ਮਹਲਾ ੧",
