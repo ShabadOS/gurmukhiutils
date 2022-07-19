@@ -13,3 +13,12 @@ repos:
     rev: 5.10.1
     hooks:
       - id: isort
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest
+        language: system
+        pass_filenames: false
+        always_run: true
