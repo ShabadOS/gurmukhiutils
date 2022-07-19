@@ -2,6 +2,9 @@
   "editor.defaultFormatter": "ms-python.python",
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true,
+  },
   "editor.tabSize": 4,
   "python.testing.autoTestDiscoverOnSaveEnabled": true,
   "python.testing.pytestArgs": ["tests"],
