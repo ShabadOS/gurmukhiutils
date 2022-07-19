@@ -3,7 +3,7 @@ import re
 from gurmukhiutils.constants import VISHRAMS
 
 
-def remove(string: str, removals: list) -> str:
+def remove(string: str, removals: list[str]) -> str:
     """
     Removes substrings from string.
 
@@ -22,18 +22,13 @@ def remove(string: str, removals: list) -> str:
         'ਸਬਦ ਸਬਦ ਸਬਦ ਸਬਦ'
     """
 
-    try:
-        removals[0].split()
-    except AttributeError:
-        removals = removals[0]
-
     for removal in removals:
         string = string.replace(removal, "")
 
     return string
 
 
-def remove_regex(string: str, patterns: list) -> str:
+def remove_regex(string: str, patterns: list[str]) -> str:
     """
     Removes regex patterns from string.
 
@@ -51,11 +46,6 @@ def remove_regex(string: str, patterns: list) -> str:
         >>> remove_regex("ਸਬਦ. ਸਬਦ, ਸਬਦ; ਸਬਦ", [".+\\s"])
         'ਸਬਦ'
     """
-
-    try:
-        patterns[0].split()
-    except AttributeError:
-        patterns = patterns[0]
 
     for pattern in patterns:
         string = re.sub(pattern, "", string)

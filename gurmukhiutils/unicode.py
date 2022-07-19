@@ -339,13 +339,13 @@ def sort_diacritics(string: str) -> str:
         + REMAINING_MODIFIER_ORDER
     )
 
-    def regex_sort_func(match: Match) -> str:
+    def regex_sort_func(match: Match[str]) -> str:
         """
         This re-arranges characters in "match" according to a custom sort order "GENERATED_MATCH_ORDER"
         """
 
         if len(_match := match.group()) > 1:
-            _match = sorted(_match, key=lambda e: GENERATED_MATCH_ORDER.index(e))
+            _match = sorted(_match, key=lambda e: GENERATED_MATCH_ORDER.index(e))  # type: ignore
             _match = "".join(_match)
 
         return _match
@@ -389,7 +389,7 @@ def sanitize_unicode(string: str) -> str:
     return string
 
 
-def decode_unicode(string: str) -> list:
+def decode_unicode(string: str) -> list[dict[str, str]]:
     """
     Takes a string and returns a list of keys and values of each character and its corresponding code point.
 
@@ -407,7 +407,7 @@ def decode_unicode(string: str) -> list:
     return [{item: format(ord(item), "04x")} for item in string]
 
 
-def encode_unicode(strings: list) -> list:
+def encode_unicode(strings: list[str]) -> list[str]:
     """
     Takes a string and returns its corresponding unicode character.
 

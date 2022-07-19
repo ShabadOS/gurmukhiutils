@@ -5,7 +5,7 @@ def triple_unicode(string: str) -> str:
     return unicode(unicode(unicode(string)))
 
 
-def test_unicode():
+def test_unicode() -> None:
     assertions = {
         "123": "੧੨੩",
         "<> > <": "ੴ ☬ ੴ",
@@ -16,7 +16,7 @@ def test_unicode():
         assert triple_unicode(key) == value
 
 
-def test_unicode_diacritics():
+def test_unicode_diacritics() -> None:
     assertions = {
         "kRwN": "ਕ੍ਰਾਂ",
         "sÍwNiq": "ਸ੍ਵਾਂਤਿ",
@@ -48,7 +48,7 @@ def test_unicode_diacritics():
         assert triple_unicode(key) == value
 
 
-def test_unicode_sihari():
+def test_unicode_sihari() -> None:
     assertions = {
         "BuiKAw.": "ਭੁਖਿਆ.",
         "ਭੁਖiਆ.": "ਭੁਖਿਆ.",
@@ -61,7 +61,7 @@ def test_unicode_sihari():
         assert triple_unicode(key) == value
 
 
-def test_unicode_nasalization():
+def test_unicode_nasalization() -> None:
     assertions = {
         "iQqMØI": "ਥਿਤੀੰ",  # some fonts render as ੀੰ, Sant Lipi should render  ੰ + ੀ
         "kMØI": "ਕੀੰ",
@@ -74,7 +74,7 @@ def test_unicode_nasalization():
         assert triple_unicode(key) == value
 
 
-def test_unicode_ascii_conversions():
+def test_unicode_ascii_conversions() -> None:
     assertions = {
         "DR¨A": "ਧ੍ਰੂਅ",
         "AwilsÎ": "ਆਲਿਸ੍ਯ",
@@ -95,7 +95,7 @@ def test_unicode_ascii_conversions():
         assert triple_unicode(key) == value
 
 
-def test_unicode_ascii_conversions_subscripts():
+def test_unicode_ascii_conversions_subscripts() -> None:
     assertions = {
         "isRis†": "ਸ੍ਰਿਸ੍ਟਿ",
         "ik®s˜M": "ਕ੍ਰਿਸ੍ਨੰ",
@@ -119,7 +119,7 @@ def test_unicode_ascii_conversions_subscripts():
         assert triple_unicode(key) == value
 
 
-def test_unicode_yayya():
+def test_unicode_yayya() -> None:
     unicode_compliant_assertions = {
         # Yayya with or without diacritics renders correctly.
         "XkIN": "ਯਕੀਂ",
@@ -195,7 +195,7 @@ def test_unicode_yayya():
         )
 
 
-def test_unicode_diacritic_ordering():
+def test_unicode_diacritic_ordering() -> None:
     ਗੋੁਬਿੰਦ = "\u0a17\u0a4b\u0a41\u0a2c\u0a3f\u0a70\u0a26"
     ਮਿਲੵਿੋ = "\u0a2e\u0a3f\u0a32\u0a75\u0a3f\u0a4b"
     ਗ੍ਹਿਾਨ = "\u0a17\u0a4d\u0a39\u0a3f\u0a3e\u0a28"
@@ -235,7 +235,7 @@ def test_unicode_diacritic_ordering():
         assert triple_unicode(key) == value
 
 
-def test_unicode_sanitization():
+def test_unicode_sanitization() -> None:
     ਓੁ = "\u0a13\u0a41"
     ਓੂ = "\u0a13\u0a42"
     ਆਂ = "\u0a06\u0a02"
