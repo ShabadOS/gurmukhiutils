@@ -7,10 +7,10 @@ def ascii(
     string: str,
 ) -> str:
     """
-    Converts gurmukhi characters for Open Gurbani Akhar font.
+    Converts Gurmukhi to ASCII for Open Gurbani Akhar font.
 
     Note:
-        Open Gurbani Akhar is the only font that can fully render the Shabad OS Database. Historically, every other ASCII font is insufficiently capable.
+        Open Gurbani Akhar is the only font that can fully render the Shabad OS Database. Historically, every other ASCII font has been insufficiently capable.
 
     Args:
         string: The string to affect.
@@ -109,10 +109,9 @@ def ascii(
         ord("☬"): "Ç",
     }
 
-    # Ordered as such to supporth both font input methods
     ASCII_REPLACEMENTS = {
         "੍ਯ": "Î",  # half-yayya
-        "꠳ਯ": "Î",
+        "꠳ਯ": "Î",  # sant lipi variation
         "꠴ਯ": "ï",  # open-top yayya
         "꠵ਯ": "î",  # open-top half-yayya
         "੍ਰ": "R",
@@ -132,17 +131,17 @@ def ascii(
     string = string.translate(ASCII_TRANSLATION)
 
     # Re-arrange sihari
-    ASCII_BASE_LETTERS = r"eshkKgG\|cCjJ\\tTfFxqQdDnpPbBmXrlvVSz^&ZLÎïî"
+    ASCII_BASE_LETTERS = r"aAeshkKgG\|cCjJ\\tTfFxqQdDnpPbBmXrlvVSz^&ZLÎïî"
     ASCII_MODIFIERS = "æ@\u00b4ÚwIuUyYoO`MNRÍHç†œ\u02dcü\u00a8®µ\u02c6W~¤Ï"
     _regex = rf"([{ASCII_BASE_LETTERS}][{ASCII_MODIFIERS}]*)i([{ASCII_MODIFIERS}]*)"
     string = re.sub(_regex, r"i\1\2", string)
 
-    # Fix below-base-letter + u vowels
+    # Fix below-base-letter + u vowel positioning
+    ASCII_BELOW_BASE_LETTERS = "RÍHç†œ\u02dc\u00b4@"
     BELOW_VOWEL_MAPPINGS = {
         "u": "ü",
         "U": "¨",
     }
-    ASCII_BELOW_BASE_LETTERS = "RÍHç†œ\u02dc\u00b4@"
     for key, value in BELOW_VOWEL_MAPPINGS.items():
         _regex = rf"([{ASCII_BELOW_BASE_LETTERS}][{ASCII_MODIFIERS}]*){key}([{ASCII_MODIFIERS}]*)"
         string = re.sub(_regex, rf"\1{value}\2", string)
