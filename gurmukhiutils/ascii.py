@@ -93,7 +93,6 @@ def ascii(
         ord("ੰ"): "M",
         ord("ਂ"): "N",
         ord("ੱ"): "`",
-        ord("\u0a01"): "`N",  # ਁ (adak bindi)
         ord("।"): "[",
         ord("॥"): "]",
         ord("੦"): "0",
@@ -160,8 +159,9 @@ def ascii(
 
     # Make rendering changes for combos
     ASCII_COMBO_REPLACEMENTS = {
-        "IM": "MØI",  # sihari + tippi ligature
-        "Iµ": "µØI",  # sihari + tippi ligature
+        "I\u0a01": "ˆØI",  # bindi + bihari ligature
+        "IM": "µØI",  # tippi + bihari ligature
+        "Iµ": "µØI",  # tippi + bihari ligature
         "kR": "k®",  # kakka + pair-rara ligature
         "H¨": "§",
         "w`": "w¤",  # addhak positioning

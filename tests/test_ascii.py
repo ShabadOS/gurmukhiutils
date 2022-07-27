@@ -55,11 +55,13 @@ def test_ascii_sihari() -> None:
 
 def test_ascii_nasalization() -> None:
     assertions = {
-        "ਥਿਤੀੰ": "iQqMØI",
-        "ਕੀੰ": "kMØI",
+        "ਥਿਤੀੰ": "iQqµØI",
+        "ਕੀੰ": "kµØI",
         "ਨੀੰਬੁ": "nµØIbu",
         "ਨੀੰਬਾ": "nµØIbw",
         "ਦੇਂਹਿ": "dyNih",
+        "ਗੁਣੀਁ": "guxˆØI",
+        "ਸਖੀਁ": "sKˆØI",
     }
 
     for key, value in assertions.items():
