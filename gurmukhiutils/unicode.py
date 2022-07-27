@@ -168,6 +168,8 @@ def unicode(
 
     # Ordered as such to supporth both font input methods
     ASCII_TO_SL_REPLACEMENTS = {
+        "ˆØI": "ੀਁ",  # Handle pre-bihari-bindi with unused adakbindi
+        #
         "<>": "ੴ",  # AnmolLipi/GurbaniAkhar variant
         "<": "ੴ",  # GurbaniLipi variant
         ">": "☬",  # GurbaniLipi variant
@@ -187,6 +189,7 @@ def unicode(
         "꠳ਯ": "੍ਯ",
         "꠴ਯ": "ਯ",
         "꠵ਯ": "੍ਯ",
+        "ਁ": "ਂ",  # pre-bihari-bindi
     }
 
     # Move ASCII sihari before mapping to unicode
@@ -195,13 +198,13 @@ def unicode(
     string = re.sub(ASCII_SIHARI_PATTERN, r"\2\1", string)
 
     # Map any ASCII / Unicode Gurmukhi to Sant Lipi format
-    string = string.translate(ASCII_TO_SL_TRANSLATION)
-
     for key, value in ASCII_TO_SL_REPLACEMENTS.items():
         string = string.replace(key, value)
 
     for key, value in UNICODE_TO_SL_REPLACEMENTS.items():
         string = string.replace(key, value)
+
+    string = string.translate(ASCII_TO_SL_TRANSLATION)
 
     # Normalize Unicode
     string = unicode_normalize(string)

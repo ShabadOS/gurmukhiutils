@@ -74,6 +74,19 @@ def test_unicode_nasalization() -> None:
         assert triple_unicode(key) == value
 
 
+def test_unicode_bindi_before_bihari() -> None:
+    assertions = {
+        "guxˆØI": "ਗੁਣੀਁ",
+        "sKˆØI": "ਸਖੀਁ",
+    }
+
+    for key, value in assertions.items():
+        assert (
+            unicode(unicode(unicode(key, "Sant Lipi"), "Sant Lipi"), "Sant Lipi")
+            == value
+        )
+
+
 def test_unicode_ascii_conversions() -> None:
     assertions = {
         "DR¨A": "ਧ੍ਰੂਅ",
