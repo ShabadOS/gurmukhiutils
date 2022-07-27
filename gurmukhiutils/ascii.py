@@ -163,7 +163,6 @@ def ascii(
         "Iµ": "µØI",  # tippi + bihari ligature
         "kR": "k®",  # kakka + pair-rara ligature
         "H¨": "§",
-        "w`": "w¤",  # addhak positioning
         "wN": "W",  # addhak positioning
         "wˆ": "W",  # addhak positioning
         "nUµ": "ƒ",

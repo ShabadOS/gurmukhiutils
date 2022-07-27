@@ -116,7 +116,7 @@ def test_ascii_yayya() -> None:
         # Yayya
         "ਯਕੀਂ": "XkIN",
         "ਪ੍ਰਿਯ": "ipRX",
-        "ਹਯਾੱਤਿ": "hXw¤iq",
+        "ਹਯਾੱਤਿ": "hXw`iq",
         "ਹਮਾਯੂੰ": "hmwXUM",
         "ਭਯੋੁ": "BXou",
         "ਯਕੀਨ": "XkIn",
