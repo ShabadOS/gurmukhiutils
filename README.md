@@ -22,10 +22,14 @@ This is a cursory overview of the functions available. To learn more, see any fu
 
 **Module `gurmukhiutils.unicode`**
 
-- `unicode` - Converts any ascii gurmukhi characters and sanitizes to unicode gurmukhi.
+- `unicode` - Converts any ascii gurmukhi characters and sanitizes to unicode gurmukhi. Supports markup language of [Sant Lipi](https://github.com/shabados/SantLipi).
 - `unicode_normalize` - Normalizes Gurmukhi according to Unicode Standards.
 - `sort_diacritics` - Orders the gurmukhi diacritics in a string according to Unicode standards.
 - `sanitize_unicode` - Use single char representations of constructed characters.
+
+**Module `gurmukhiutils.convert`**
+
+Converts text from a script to another. Currently only supports lossless Gurmukhi to Roman transliteration. Gurmukhi to Roman transcription is a WIP.
 
 **Module `gurmukhiutils.remove`**
 
@@ -34,15 +38,18 @@ This is a cursory overview of the functions available. To learn more, see any fu
 - `remove_line_endings` - Attempts to remove line endings as best as possible.
 - `remove_vishrams` - Removes all vishram characters.
 
+**`gurmukhiutils.ascii`** - Converts Gurmukhi to ASCII for Open Gurbani Akhar font.
+
 **Example**
 
 ```python
->>> from gurmukhiutils import unicode
->>> unicode("123")
-'੧੨੩'
-
+>>> from gurmukhiutils.unicode import unicode
 >>> unicode("gurU")
 'ਗੁਰੂ'
+
+>>> from gurmukhiutils.convert import convert
+>>> convert("ਗੁਰੂ")
+'gurū'
 ```
 
 ## Contribute
