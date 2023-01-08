@@ -1,5 +1,7 @@
 import re
 
+from gurmukhiutils.constants import BASE_LETTERS, BELOW_LETTERS, VIRAMA, YAKASH
+
 ROMAN_REPLACEMENTS = {
     "ਕ਼": "q",
     "੍ਯ": "y̶",  # half-yayya uses strikethrough U+0336
@@ -95,7 +97,7 @@ ROMAN_TRANSLATIONS = {
 }
 
 
-def gurmukhi_to_roman_translit(
+def guru_latn(
     string: str,
 ) -> str:
     """
@@ -108,15 +110,14 @@ def gurmukhi_to_roman_translit(
         A string where the gurmukhi script is converted to roman script.
 
     Examples:
-        >>> gurmukhi_to_roman_transliteration("੧੨੩")
+        >>> guru_latneration("੧੨੩")
         '123'
 
-        >>> gurmukhi_to_roman_transliteration("ਗੁਰੂ")
+        >>> guru_latneration("ਗੁਰੂ")
         'gurū'
     """
 
     # Add inherent vowel / Mukta (ਮੁਕਤਾ = ਅ)
-    BASE_LETTERS = "ਸਹਕਖਗਘਙਚਛਜਝਞਟਠਡਢਣਤਥਦਧਨਪਫਬਭਮਯਰਲਵੜਸ਼ਖ਼ਗ਼ਜ਼ਫ਼ਲ਼"
 
     # Between words
     NON_VOWEL_MODIFIERS = "਼ੑੵ"
@@ -129,10 +130,6 @@ def gurmukhi_to_roman_translit(
     string = re.sub(REGEX_PATTERN, r"\1ਅ", string)
 
     # Single letter
-    VIRAMA = "੍"
-    BELOW_LETTERS = "ਹਰਵਟਤਨਚ"
-    YAKASH = "ੵ"
-
     SINGLE_CHAR_PATTERN = (
         rf"(^|\s|$)([{BASE_LETTERS}])([{VIRAMA}][{BELOW_LETTERS}]|{YAKASH})?(^|\s|$)"
     )
