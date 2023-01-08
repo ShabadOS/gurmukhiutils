@@ -1,7 +1,7 @@
 from gurmukhiutils.convert import convert
 
 
-def test_gurmukhi_to_roman_translit() -> None:
+def test_guru_latn() -> None:
     assertions = {
         "ਸਬਦ": "sabad",
         "Example ਸਬਦ": "Example sabad",
@@ -120,4 +120,4 @@ def test_gurmukhi_to_roman_translit() -> None:
     }
 
     for key, value in assertions.items():
-        assert convert(key, "Gurmukhi to Roman Translit") == value
+        assert convert(key, "guru_latn") == value
