@@ -3,6 +3,9 @@ from gurmukhiutils.convert import convert
 
 def test_guru_latn() -> None:
     assertions = {
+        "ੴ": "ik oa⸛kār",
+        "ਅਜ਼ਾਦ": "azād",
+        "ਕ਼": "qa",
         "ਸਬਦ": "sabad",
         "Example ਸਬਦ": "Example sabad",
         "ਜਨਨੀ": "jananī",

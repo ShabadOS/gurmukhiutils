@@ -1,6 +1,7 @@
 import re
 
 from gurmukhiutils.constants import BASE_LETTERS, BELOW_LETTERS, VIRAMA, YAKASH
+from gurmukhiutils.unicode import unicode_normalize
 
 ROMAN_REPLACEMENTS = {
     "ਕ਼": "q",
@@ -117,22 +118,26 @@ def guru_latn(
         'gurū'
     """
 
+    # confirm normalized gurmukhi
+    string = unicode_normalize(string)
+
+    # Ik Oankar
+    string = string.replace("ੴ", "ਇਕ ਓਅੰਕਾਰ")
+
     # Add inherent vowel / Mukta (ਮੁਕਤਾ = ਅ)
 
     # Between words
-    NON_VOWEL_MODIFIERS = "਼ੑੵ"
+    NON_VOWEL_MODIFIERS = "਼ੑੵ਼"
     PRE_BASE_LIGATURE = "꠳꠴꠵"
     POST_LETTERS = "ਆਏਐਇਈਓਔਉਊ"
     PRE_POST_MODIFIERS = "ੱਂੰ"
 
-    REGEX_PATTERN = rf"([{BASE_LETTERS}{NON_VOWEL_MODIFIERS}])(?=[{PRE_BASE_LIGATURE}{BASE_LETTERS}{POST_LETTERS}{PRE_POST_MODIFIERS}])"
+    REGEX_PATTERN = rf"([{BASE_LETTERS}][{NON_VOWEL_MODIFIERS}]?)(?=[{PRE_BASE_LIGATURE}{BASE_LETTERS}{POST_LETTERS}{PRE_POST_MODIFIERS}])"
 
     string = re.sub(REGEX_PATTERN, r"\1ਅ", string)
 
     # Single letter
-    SINGLE_CHAR_PATTERN = (
-        rf"(^|\s|$)([{BASE_LETTERS}])([{VIRAMA}][{BELOW_LETTERS}]|{YAKASH})?(^|\s|$)"
-    )
+    SINGLE_CHAR_PATTERN = rf"(^|\s|$)([{BASE_LETTERS}][{NON_VOWEL_MODIFIERS}]?)([{VIRAMA}][{BELOW_LETTERS}]|{YAKASH})?(^|\s|$)"
 
     string = re.sub(SINGLE_CHAR_PATTERN, r"\1\2\3ਅ\4", string)
 
