@@ -70,7 +70,7 @@ def guru_latn_pa(
     # type ignore comment is to stop mypy complaining about List[Any], see https://github.com/python/typeshed/issues/263
     if len(re.findall(rf"[{VOWEL_LETTERS}{BASE_LETTERS}]", string)) > 1:  # type: ignore
         string = re.sub(
-            r"(ਿ?)(ੇ?ੈ?ੋ?ੌ?)(ੁ?)(ੂ?ਾ?ੀ?)(ਁ?ੱ?ਂ?ੰ?ਃ?)(-|\s|$)", r"\2\4\5\6", string
+            r"(ਿ?)(ੇ?ੈ?ੋ?ੌ?)(ੁ?)(ੂ?ਾ?ੀ?)(ਁ?ੱ?ਂ?ੰ?ਃ?)(‧|\s|$)", r"\2\4\5\6", string
         )
 
     # shorten ੋੁ from start of words
@@ -78,12 +78,12 @@ def guru_latn_pa(
     HORA_ONKAR = "\u0a4b\u0a41"
     DULAVAN_ONKAR = "\u0a48\u0a41"
     string = re.sub(
-        rf"(^|\s|-)([{BASE_LETTERS}])({VIRAMA}[{BELOW_LETTERS}]|{YAKASH})?[{HORA_ONKAR}][{HORA_ONKAR}]",
+        rf"(^|\s|‧)([{BASE_LETTERS}])({VIRAMA}[{BELOW_LETTERS}]|{YAKASH})?[{HORA_ONKAR}][{HORA_ONKAR}]",
         r"\1\2\3ੋ",
         string,
     )
     string = re.sub(
-        rf"(^|\s|-)([{BASE_LETTERS}])({VIRAMA}[{BELOW_LETTERS}]|{YAKASH})?[{DULAVAN_ONKAR}][{DULAVAN_ONKAR}]",
+        rf"(^|\s|‧)([{BASE_LETTERS}])({VIRAMA}[{BELOW_LETTERS}]|{YAKASH})?[{DULAVAN_ONKAR}][{DULAVAN_ONKAR}]",
         r"\1\2\3ੈ",
         string,
     )
@@ -96,41 +96,41 @@ def guru_latn_pa(
 
     # string = re.sub(
     #     r"([꠳꠴꠵]?)ਯਹੁ",
-    #     r"\1ਯੌਹ-",
+    #     r"\1ਯੌਹ‧",
     #     string,
     # )
 
     # string = re.sub(
     #     rf"([ਯ{BASE_LETTERS}])(ਿ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"\1ੇ\3\4-",
+    #     r"\1ੇ\3\4‧",
     #     string,
     # )
     # string = re.sub(
     #     rf"(ਇ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"ਏ\2\3-",
+    #     r"ਏ\2\3‧",
     #     string,
     # )
 
     # string = re.sub(
     #     rf"([ਯ{BASE_LETTERS}])(ੁ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"\1ੋ\3\4-",
+    #     r"\1ੋ\3\4‧",
     #     string,
     # )
     # string = re.sub(
     #     rf"(ਉ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"ਓ\2\3-",
+    #     r"ਓ\2\3‧",
     #     string,
     # )
 
     # string = re.sub(
     #     rf"([ਯ{BASE_LETTERS}])(ਹਿ)",
-    #     r"\1ੈਹ-",
+    #     r"\1ੈਹ‧",
     #     string,
     # )
 
     # string = re.sub(
     #     rf"(ਯ|[{BASE_LETTERS}])(ਹੁ)",
-    #     r"\1ੌਹ-",
+    #     r"\1ੌਹ‧",
     #     string,
     # )
 
@@ -138,8 +138,8 @@ def guru_latn_pa(
     string = string.translate(TRANSLIT_ALTERATIONS)
     string = guru_latn(string)
 
-    # separate hyphenated parts and treat individually
-    strings = string.split("-")
+    # separate parts and treat individually
+    strings = string.split("‧")
 
     enumerate = ""
 

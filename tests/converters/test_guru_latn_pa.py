@@ -1,8 +1,33 @@
 from gurmukhiutils.convert import convert
 
+"""
+
+#TODO
+
+Implement function to automatically add hyphenation () with confidence scores. End use would be to ignore words with deliberate hyphenation and potentially interpret hyphenation of other words. Or to improve the hyphenation function to handle all examples below, such that deliberate hyphenation be not required.
+
+Implement "stress" function to indicate with an apostrophe where lexical stress is. Example: ਅ'ਕਾਲੀ vs ਅਕਾ'ਲੀ, correct stress would be the former (on ਕਾ). See work / papers by Rajdip Dhillon.
+
+Fix the commented out tests.
+
+Questions:
+
+Handling of persian ghayn (ਗ਼) as ġ or gh
+
+Always adding nukta to ਫ (ph = f)
+
+u+a as w (ੁ + ਅ = ਵ)
+
+i+a as y (ਿ + ਅ = ਯ)
+
+Better handling of nasalizations (Distinguish n and m sounds? Meaning: nasalizations preceding ਪ ਫ ਬ ਭ ਮ be switched from generic ñ to m). E.g. ਚੰਪਾ = campā,  ਸੌਂਫ = sōmph, ਅੰਬ = amb, ਆਰੰਭ = ārambh, ਅੰਮ੍ਰਿਤ = ammrit. These are all according to the more popular spellings excepting ਫ. Maybe ignore ਫ if we are switching them all to "f" according to above point e.g. ਸੌਂਫ = sōnf (iso standard "saunf" which is the popular spelling).
+
+"""
+
 
 def test_guru_latn_pa() -> None:
     assertions = {
+        "ੴ": "ik oañkār",
         "ਸਬਦ": "sabad",
         "Example ਸਬਦ": "Example sabad",
         "ਜਨਨੀ": "jananī",
@@ -24,9 +49,9 @@ def test_guru_latn_pa() -> None:
         "ਪੁਰਖਮਨੋਪਿਮੰ": "purakhamanopimañ",
         "ਆਦਿ": "ād",
         "ਪਰਕ੍ਰਿਤਿ": "parakrit",
-        "ਪਰ-ਕ੍ਰਿਤਿ": "parkrit",
+        "ਪਰ‧ਕ੍ਰਿਤਿ": "parkrit",
         "ਜਦਿਚਿੰਤਿ": "jadiciñt",
-        "ਜਦਿ-ਚਿੰਤਿ": "jadciñt",
+        "ਜਦਿ‧ਚਿੰਤਿ": "jadciñt",
         "ਨ": "na",
         "ਤ੍ਵ": "twa",
         "ਸੰ": "sañ",
@@ -47,7 +72,7 @@ def test_guru_latn_pa() -> None:
         "ਅਸ੍ਚਰਜ": "ascaraj",
         "ਬਿਸ੍ਟਾ": "bisṭā",
         "ਸਮਝ੍ਯੋ": "samajhyo",
-        "ਸਮ-ਝ੍ਯੋ": "samjhyo",
+        "ਸਮ‧ਝ੍ਯੋ": "samjhyo",
         "ਪੀਯ": "pīy",
         "ਪ੍ਰਯਾਯੋ": "prayāyo",
         "ਅਸ੍ਵਨ": "aswan",
@@ -65,7 +90,7 @@ def test_guru_latn_pa() -> None:
         "ਯਯਾ": "yayā",
         "ਸ਼ੇਰ": "sher",
         "ਖ਼ਾਲਸਾ": "ḳhālasā",
-        "ਖ਼ਾਲ-ਸਾ": "ḳhālsā",
+        "ਖ਼ਾਲ‧ਸਾ": "ḳhālsā",
         "ਗ਼ਰੀਬ": "ġarīb",
         "ਲੋੁਭਾਨ": "lobhān",  # o+u
         "ਲੁੋਭਾਨ": "lobhān",  # u+o
@@ -112,24 +137,28 @@ def test_guru_latn_pa() -> None:
         "ਤ੍ਰਸ꠵ਯੋ": "trasyo",
         "ਸ੍ਨੇਹੰ": "snehañ",
         "ਜਗਦੀਸ੍ਵਰਹ": "jagadīswarah",
-        "ਜਗ-ਦੀਸ੍ਵਰਹ": "jagdīswarah",
+        "ਜਗ‧ਦੀਸ੍ਵਰਹ": "jagdīswarah",
         "ਖਿਨੁ": "khin",
         "ਮੂਲਿ": "mūl",
         "ਮਹਲਾ ੫ ॥": "mahalā 5 ‖",
-        "ਮਹ-ਲਾ ੫ ॥": "mahlā 5 ‖",
+        "ਮਹ‧ਲਾ ੫ ॥": "mahlā 5 ‖",
         # "ਓਹੁ": "oh",
+        # "ਓਹੁ": "ō",
         # "ਮੁਹਿ": "mo",
         # "ਇਹੁ": "e",
         # "ਪਾਇਹੁ": "pāe",
         # "ਕਰਿਹੁ": "kare",
-        # "ਜਾਣਾਇਹਿ": "jāṇāeh",
+        # "ਜਾਣਾਇਹਿ": "jāṇāe",
+        # "ਵਾਹਿ": "vāhe",
         # "ਕਿਹੜਾ": "keṛā",
         # "ਕਹਿਣਾ": "kēṇā",
+        # "ਸ਼ਹਿਰ": "shēr",
         # "ਮਹਿੰਗਾ": "mēñgā",
         # "ਵੀਸਰਹਿ": "vīsarē",
         # "ਬੋਲਹਿ": "bolē",
         # "ਦੁਹਰਾ": "dorā",
         # "ਕੁਹੜਾ": "koṛā",
+        # "ਮੁਹੱਬਤ": "mohabbat",
         # "ਵਹੁਟੀ": "wōṭī",
         # "ਮਨਹੁ": "manō",
         # "ਸਦਿਹੁ": "sade",
@@ -141,8 +170,14 @@ def test_guru_latn_pa() -> None:
         # "ਭੋਗਿਹੁ": "bhogeo",
         # "ਮੇਲਿਹੁ": "meleo",
         # "ਭਗਤਹੁ": "bhagatō",
+        # "ਆਵਹੁ": "āwo"
+        # "ਨਿਹੰਗ" : "neang"
+        # "ਨਿ‧ਹੰਗ" : "nihang"
+    }
+
+    common_phrases = {
         "ਅੰਮ੍ਰਿਤਸਰ": "añmritasar",
-        "ਅੰਮ੍ਰਿਤ-ਸਰ": "añmritsar",
+        "ਅੰਮ੍ਰਿਤ‧ਸਰ": "añmritsar",
         "ਪੰਜਾਬੀ": "pañjābī",
         "ਗੋਬਿੰਦ": "gobiñd",
         "ਗੋੁਬਿੰਦ": "gobiñd",
@@ -151,8 +186,68 @@ def test_guru_latn_pa() -> None:
         "ਨਾਨਕ": "nānak",
         "ਵਾਹਿਗੁਰੂ": "vāhigurū",
         "ਗੁਰਦੁਆਰਾ": "guraduārā",
-        "ਗੁਰ-ਦੁਆਰਾ": "gurduārā",
+        "ਗੁਰ‧ਦੁਆਰਾ": "gurduārā",
+        "ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਿਹ": "vāhigurū jī kā khālsā vāhigurū jī kī fateh",
+        "ਵਾਹਿ‧ਗੁਰੂ": "vāhegurū",
+        "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ": "sat srī akāl",
+        "ਬੋਲੇ ਸੋ ਨਿਹਾਲ": "bole so nihāl",
+        "ਚੜ੍ਹਦੀ ਕਲਾ": "caṛhadī kalā",
+        "ਚੜ੍ਹ‧ਦੀ ਕਲਾ": "caṛhdī kalā",
+        "ਵੰਡ ਛਕੋ": "wañḍ chako",
+        "ਗੁਰਮਤਿ": "guramat",
+        "ਗੁਰ‧ਮਤਿ": "gurmat",
+        "ਪੰਜ ਪਿਆਰੇ": "pañj piāre",
+        "ਅਖੰਡ ਪਾਠ": "akhañḍ pāṭh",
+        "ਗੁਰੂ ਨਾਨਕ": "gurū nānak",
+        "ਗੁਰੂ ਅੰਗਦ": "gurū añgad",
+        "ਗੁਰੂ ਅਮਰ ਦਾਸ": "gurū amar dās",
+        "ਗੁਰੂ ਰਾਮ ਦਾਸ": "gurū rām dās",
+        "ਗੁਰੂ ਅਰ‧ਜਨ": "gurū arjan",
+        "ਗੁਰੂ ਹਰਿ‧ਗੋਬਿੰਦ": "gurū har gobiñd",
+        "ਗੁਰੂ ਹਰਿ ਰਾਇ": "gurū har rāi",
+        "ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ": "gurū har krishan",
+        "ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ": "gurū teġ bahādar",
+        "ਗੁਰੂ ਗੋਬਿੰਦ ਸਿੰਘ": "gurū gobiñd siñgh",
+        "ਗੁਰੂ ਗ੍ਰੰਥ ਸਾਹਿਬ": "gurū grañth sāhib",
+        "ਭਗਤ ਬੈਣੀ": "bhagat bēṇī",
+        "ਭਾਈ ਮਰ‧ਦਾਨਾ": "bhāī mardānā",
+        "ਬਾਬਾ ਬੁੱਢਾ": "bābā buḍḍhā",
+        "ਰਹ‧ਰਾਸਿ ਸਾਹਿਬ": "rahrās sāhib",
+        "ਬੇਨ‧ਤੀ": "benti",
+        "ਅਰ‧ਦਾਸ": "ardās",
+        "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵੱਯੇ": "twa prasād sawayye",
+        "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸ੍ਵਯੇ": "twa prasād swaye",
     }
 
-    for key, value in assertions.items():
+    dictionary_words = {
+        "ਭਰਾ": "bharā",
+        "ਭਾਈ": "bhāī",
+        "ਮੋਤੀ": "motī",
+        "ਅਕਾਲੀ": "akālī",
+        "ਅਚਾਰ": "acār",
+        "ਅਜ਼ਾਦ": "azād",
+        "ਅਨਾਰ": "anār",
+        "ਅੱਲਾਹ": "allāh",
+        "ਰੱਬ": "rabb",
+        "ਅੱਖਰ": "akkhar",
+        "ਆਕਾਸ਼": "ākāsh",
+        "ਇਨਸਾਨ": "inasān",
+        "ਇਨ‧ਸਾਨ": "insān",
+        "ਇਸ਼ਕ": "ishak",
+        "ਇਸ਼ਕ਼": "ishaq",
+        # "ਇਸ਼‧ਕ਼": "ishqa",
+        # "?": "ishq",
+        "ਪਿਆਰ": "piār",
+        "ਉਸਤਤ": "usatat",
+        "ਉਸ‧ਤਤ": "ustat",
+        "ਉਸ‧ਤਾਦ": "ustād",
+        "ਕਣਕ": "kaṇak",
+        "ਕਮਲ": "kamal",
+        "ਪਦਮ": "padam",
+        "ਕੰਵਲ": "kañwal",
+    }
+
+    for key, value in (
+        assertions.items() and common_phrases.items() and dictionary_words.items()
+    ):
         assert convert(key, "guru_latn_pa") == value

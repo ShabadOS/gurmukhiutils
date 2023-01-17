@@ -379,10 +379,10 @@ def sanitize_unicode(string: str) -> str:
         "\u0a05\u0a4c": "\u0a14",  # ਔ
         "\u0a32\u0a3c": "\u0a33",  # ਲ਼
         "\u0a38\u0a3c": "\u0a36",  # ਸ਼
-        "\u0a59\u0a3c": "\u0a59",  # ਖ਼
-        "\u0a5a\u0a3c": "\u0a5a",  # ਗ਼
-        "\u0a5b\u0a3c": "\u0a5b",  # ਜ਼
-        "\u0a5e\u0a3c": "\u0a5e",  # ਫ਼
+        "\u0a16\u0a3c": "\u0a59",  # ਖ਼
+        "\u0a17\u0a3c": "\u0a5a",  # ਗ਼
+        "\u0a1c\u0a3c": "\u0a5b",  # ਜ਼
+        "\u0a2b\u0a3c": "\u0a5e",  # ਫ਼
         "\u0a71\u0a02": "\u0a01",  # ਁ adak bindi (quite literally never used today or in the Shabad OS Database, only included for parity with the Unicode block)
     }
 
