@@ -1,4 +1,5 @@
 import re
+import warnings
 
 from gurmukhiutils.unicode import unicode_normalize
 
@@ -92,7 +93,7 @@ def ascii(
         ord("ੌ"): "O",
         ord("ੰ"): "M",
         ord("ਂ"): "N",
-        ord("ੱ"): "`",
+        ord("ੱ"): "~",
         ord("।"): "[",
         ord("॥"): "]",
         ord("੦"): "0",
@@ -125,13 +126,36 @@ def ascii(
 
     string = unicode_normalize(string)
 
+    # Warnings
+    ABOVE_VOWEL_MARKS = "".join(
+        [
+            "ੇ",
+            "ੈ",
+            "ੋ",
+            "ੌ",
+        ]
+    )
+    BELOW_VOWEL_MARKS = "".join(
+        [
+            "ੁ",
+            "ੂ",
+        ]
+    )
+    CHECKS = {
+        rf"[ਾ{ABOVE_VOWEL_MARKS}][ਾ{ABOVE_VOWEL_MARKS}]": "Incorrect vowel syntax (above vowel)",
+        rf"[ਾ{BELOW_VOWEL_MARKS}][ਾ{BELOW_VOWEL_MARKS}]": "Incorrect vowel syntax (below vowel)",
+    }
+    for _regex, warning in CHECKS.items():
+        if re.search(_regex, string):
+            warnings.warn(f"{warning}", UserWarning)
+
     for key, value in ASCII_REPLACEMENTS.items():
         string = string.replace(key, value)
 
     string = string.translate(ASCII_TRANSLATION)
 
     # Re-arrange sihari
-    ASCII_BASE_LETTERS = r"aAeshkKgG\|cCjJ\\tTfFxqQdDnpPbBmXrlvVSz^&ZLÎïî"
+    ASCII_BASE_LETTERS = r"AeshkKgG\|cCjJ\\tTfFxqQdDnpPbBmXrlvVSz^&ZLÎïî"
     ASCII_MODIFIERS = "æ@\u00b4ÚwIuUyYoO`MNRÍHç†œ\u02dcü\u00a8®µ\u02c6W~¤Ï"
     _regex = rf"([{ASCII_BASE_LETTERS}][{ASCII_MODIFIERS}]*)i([{ASCII_MODIFIERS}]*)"
     string = re.sub(_regex, r"i\1\2", string)
@@ -151,10 +175,15 @@ def ascii(
     _regex = rf"([{CENTER_STROKE_LETTERS}][{ASCII_MODIFIERS}]*)M([{ASCII_MODIFIERS}]*)"
     string = re.sub(_regex, r"\1µ\2", string)
 
-    # Fix positioning of bindi when it is the only above-base-form
+    # Fix positioning of bindi/tippi when it is the only above-base-form
     ASCII_NON_ABOVE_MODIFIERS = "æ@\u00b4ÚwuURÍHç†œ\u02dcü\u00a8®Ï"
-    _regex = rf"([{ASCII_BASE_LETTERS}][{ASCII_NON_ABOVE_MODIFIERS}]*)N([{ASCII_NON_ABOVE_MODIFIERS}]*)"
-    string = re.sub(_regex, r"\1ˆ\2", string)
+    NASALIZATION_MAPPINGS = {
+        "N": "ˆ",
+        "~": "`",
+    }
+    for key, value in NASALIZATION_MAPPINGS.items():
+        _regex = rf"([{ASCII_BASE_LETTERS}][{ASCII_NON_ABOVE_MODIFIERS}]*){key}([{ASCII_NON_ABOVE_MODIFIERS}]*)"
+        string = re.sub(_regex, rf"\1{value}\2", string)
 
     # Make rendering changes for combos
     ASCII_COMBO_REPLACEMENTS = {

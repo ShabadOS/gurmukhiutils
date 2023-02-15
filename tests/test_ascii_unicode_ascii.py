@@ -1,3 +1,5 @@
+from pytest import warns
+
 from gurmukhiutils.ascii import ascii
 from gurmukhiutils.unicode import unicode
 
@@ -145,3 +147,90 @@ def test_a2a_yayya() -> None:
 
     for string in assertions:
         assert from_ascii_to_ascii(string) == string
+
+
+def test_a2a_db4() -> None:
+    assertions = {
+        # backslash
+        "suMi\\Aw",
+        # au~
+        "au~cI",
+        "au~im",
+        "au~cM",
+        # auN
+        "ieauN",
+        "BauNh",
+        "gwauN",
+        "bqwauN",
+        # aUN
+        "aUNGn",
+        "aUNDy",
+        "kmwaUN;",
+        "pwaUN",
+    }
+
+    for string in assertions:
+        assert from_ascii_to_ascii(string) == string
+
+
+def test_a2a_db4_fixes() -> None:
+    assertions = {
+        # fix adhak positioning
+        "im~qr": "im`qr",
+        "s~jn": "s`jn",
+        "sb¤k": "sb`k",
+        "h¤k": "h`k",
+        # simplify chars
+        "nUµ": "ƒ",
+        "cunUµ": "cuƒ",
+        "swnUµ": "swƒ",
+        "mjnUM": "mjƒ",
+        "hnUMmq": "hƒmq",
+        "knUM": "kƒ",
+        "kolH¨": "kol§",
+        "cVH¨": "cV§",
+        "Ru": "Rü",
+        "uR": "Rü",
+        "uH": "Hü",
+        "Hu": "Hü",
+        "®u": "Rü",
+        "k®u": "k®ü",
+        "lµ": "lM",
+        "TM": "Tµ",
+        "TUM": "TUµ",
+        "n´M": "n´µ",
+        "cuN": "cuˆ",
+        "kR": "k®",
+    }
+
+    for key, value in assertions.items():
+        assert from_ascii_to_ascii(key) == value
+
+
+def test_a2a_throw_errors() -> None:
+    assertions = {
+        "Oo",
+        "oO",
+        "Oy",
+        "OY",
+        "oy",
+        "oY",
+        "wY",
+        "wy",
+        "yw",
+        "Yw",
+        "WY",
+        "Wy",
+        "yW",
+        "YW",
+        "wu",
+        "Wu",
+        "wU",
+        "WU",
+        "uU",
+        "Uu",
+    }
+
+    for string in assertions:
+        with warns(UserWarning):
+            from_ascii_to_ascii(string)
