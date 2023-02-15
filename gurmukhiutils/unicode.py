@@ -193,7 +193,7 @@ def unicode(
     }
 
     # Move ASCII sihari before mapping to unicode
-    ASCII_BASE_LETTERS = "a-zA-Z\\|^&Îîï"
+    ASCII_BASE_LETTERS = "\\a-zA-Z|^&Îîï"
     ASCII_SIHARI_PATTERN = rf"(i)([{ASCII_BASE_LETTERS}])"
     string = re.sub(ASCII_SIHARI_PATTERN, r"\2\1", string)
 
