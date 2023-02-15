@@ -55,6 +55,9 @@ def test_unicode_sihari() -> None:
         "ਮi": "ਮਿ",
         "ਮiਲ": "ਮਿਲ",
         "ਮil": "ਮਲਿ",
+        "suMi\\Aw": "ਸੁੰਞਿਆ",
+        "|i||": "ਙਙਿਙ",
+        "di&": "ਦਫ਼ਿ",
     }
 
     for key, value in assertions.items():
