@@ -47,14 +47,14 @@ Note: Before creating new branches, ensuring that the forked `main` is up to dat
 **Development:**
 
 - Install project dependencies with `poetry install`.
-- Automatically format/lint when committing by enabling pre-commit hooks with `poetry run pre-commit install`.
+- Automatically format/lint when committing by enabling pre-commit hooks with `poetry run autohooks activate --mode poetry`.
 - Run tests with `poetry run pytest`.
 
 Note: Select the Python Interpreter in VS Code to access dev dependencies.
 
-Note: The optional extensions in VS Code may help.
+Note: VS Code's SCM (source control manager) does not respect the virtual environment created by Poetry (see [vscode-python#10165](https://github.com/microsoft/vscode-python/issues/10165)). To use pre-commit, you'd have to run something like `poetry run git commit -m "feat: add your message here"`
 
-Note: If you don't enable the pre-commit hooks, please manually run the related commands in `.pre-commit-config.yaml` before submitting each and every PR.
+Note: If you don't enable pre-commit hooks, please manually run the related commands in the `[tool.autohooks]` section of `pyproject.toml` before submitting each and every PR.
 
 ## PR Merge
 
