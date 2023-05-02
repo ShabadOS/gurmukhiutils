@@ -4,6 +4,7 @@ from gurmukhiutils.constants import (
     BASE_LETTERS,
     BELOW_LETTERS,
     VIRAMA,
+    VOWEL_DIACRITICS,
     VOWEL_LETTERS,
     YAKASH,
 )
@@ -32,11 +33,6 @@ ROMAN_LIT2SCRIPT_REPLACEMENTS = {
     "ƴ̶": "y",
     "ᵗ̣": "ṭ",
     "ᵗ": "t",
-    "va": "wa",
-    "vu": "wu",
-    "vū": "wū",
-    "vo": "wo",
-    "vō": "wō",
 }
 
 
@@ -63,6 +59,56 @@ def guru_latn_pa(
     # confirm normalized gurmukhi
     string = unicode_normalize(string)
 
+    # handle ਹ rules
+
+    # if vowel-less haha is preceded by sihari or onkar (ਿ or ੁ), represent lavan and hora respectively (ੇ and ੋ)
+    # if vowel-less base letter is followed by a haha with sihari or onkar, yield dulavan and kanora respectively (ੈ and ੌ)
+
+    # Letter + i + h = letter + e + h
+    string = re.sub(
+        rf"([{BASE_LETTERS}])(ਿ)([ੰਂ]?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
+        r"\1ੇ\3\4‧",
+        string,
+    )
+    string = re.sub(
+        rf"(ਇ)([ੰਂ]?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
+        r"ਏ\2\3‧",
+        string,
+    )
+
+    # Letter + u + h = letter + o + h
+    string = re.sub(
+        rf"([{BASE_LETTERS}])(ੁ)([ੰਂ]?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
+        r"\1ੋ\3\4‧",
+        string,
+    )
+    string = re.sub(
+        rf"(ਉ)([ੰਂ]?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
+        r"ਓ\2\3‧",
+        string,
+    )
+
+    # Letter + h + i = letter + ee + h
+    string = re.sub(
+        rf"([ਅ{BASE_LETTERS}])([ੰਂ]?)(ਹਿ)",
+        r"\1ੈ\2ਹ‧",
+        string,
+    )
+
+    # Letter + h + u = letter + oo + h
+    string = re.sub(
+        rf"([ਅ{BASE_LETTERS}])([ੰਂ]?)(ਹੁ)",
+        r"\1ੌ\2ਹ‧",
+        string,
+    )
+
+    # Letter + h = letter + ee + h
+    string = re.sub(
+        rf"([ਅ{BASE_LETTERS}])([ੰਂ]?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
+        r"\1ੈ\2\3",
+        string,
+    )
+
     # remove grammatical vowels before converting from gurmukhi
 
     # remove ਿ and ੁ from end of words
@@ -87,52 +133,6 @@ def guru_latn_pa(
         r"\1\2\3ੈ",
         string,
     )
-
-    # handle ਹ rules
-
-    # if vowel-less haha is preceded by sihari or onkar (ਿ or ੁ), represent lavan and hora respectively (ੇ and ੋ)
-    # if vowel-less base letter is followed by a haha with sihari or onkar, yield dulavan and kanora respectively (ੈ and ੌ)
-    # TODO find more tests/cases (this is a simple check and will not catch potentially more complex scenarios)
-
-    # string = re.sub(
-    #     r"([꠳꠴꠵]?)ਯਹੁ",
-    #     r"\1ਯੌਹ‧",
-    #     string,
-    # )
-
-    # string = re.sub(
-    #     rf"([ਯ{BASE_LETTERS}])(ਿ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"\1ੇ\3\4‧",
-    #     string,
-    # )
-    # string = re.sub(
-    #     rf"(ਇ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"ਏ\2\3‧",
-    #     string,
-    # )
-
-    # string = re.sub(
-    #     rf"([ਯ{BASE_LETTERS}])(ੁ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"\1ੋ\3\4‧",
-    #     string,
-    # )
-    # string = re.sub(
-    #     rf"(ਉ)(ਂ?ੰ?)(ਹ)(?![{VIRAMA}{YAKASH}{VOWEL_DIACRITICS}])",
-    #     r"ਓ\2\3‧",
-    #     string,
-    # )
-
-    # string = re.sub(
-    #     rf"([ਯ{BASE_LETTERS}])(ਹਿ)",
-    #     r"\1ੈਹ‧",
-    #     string,
-    # )
-
-    # string = re.sub(
-    #     rf"(ਯ|[{BASE_LETTERS}])(ਹੁ)",
-    #     r"\1ੌਹ‧",
-    #     string,
-    # )
 
     # do alternate translit before function translit
     string = string.translate(TRANSLIT_ALTERATIONS)
