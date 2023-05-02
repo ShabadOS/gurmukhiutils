@@ -25,7 +25,7 @@ Better handling of nasalizations (Distinguish n and m sounds? Meaning: nasalizat
 """
 
 
-def test_guru_latn_pa() -> None:
+def test_guru_latn_pa_assertions() -> None:
     assertions = {
         "ੴ": "ik oañkār",
         "ਸਬਦ": "sabad",
@@ -53,11 +53,11 @@ def test_guru_latn_pa() -> None:
         "ਜਦਿਚਿੰਤਿ": "jadiciñt",
         "ਜਦਿ‧ਚਿੰਤਿ": "jadciñt",
         "ਨ": "na",
-        "ਤ੍ਵ": "twa",
+        "ਤ੍ਵ": "tva",
         "ਸੰ": "sañ",
         "ਭਇਅੰ": "bhaiañ",
         "ਪਰਾਭਯੰ": "parābhayañ",
-        "ਸ੍ਵਸਤਿ": "swasat",
+        "ਸ੍ਵਸਤਿ": "svasat",
         "ਸਮਬੵਿਅੰ": "samabyiañ",
         "ਪ੍ਰਸੰਨਮਿਦੰ": "prasañnamidañ",
         "ਕਿੰ": "kiñ",
@@ -67,7 +67,7 @@ def test_guru_latn_pa() -> None:
         "ਬਿਰਾਦਰਾਂ": "birādarāñ",
         "ਬਿਅਫਤਮ": "biaphatam",
         "ਈਂ": "īñ",
-        "ਵਰ੍ਹਿਆ": "warhiā",
+        "ਵਰ੍ਹਿਆ": "varhiā",
         "ਸੰਖੰ": "sañkhañ",
         "ਅਸ੍ਚਰਜ": "ascaraj",
         "ਬਿਸ੍ਟਾ": "bisṭā",
@@ -75,7 +75,7 @@ def test_guru_latn_pa() -> None:
         "ਸਮ‧ਝ੍ਯੋ": "samjhyo",
         "ਪੀਯ": "pīy",
         "ਪ੍ਰਯਾਯੋ": "prayāyo",
-        "ਅਸ੍ਵਨ": "aswan",
+        "ਅਸ੍ਵਨ": "asvan",
         "ਦਸ੍ਤਗੀਰੀ": "dastagīrī",
         "॥੧॥ ਰਹਾਉ ॥": "‖1‖ rahāu ‖",
         "॥੨॥੫॥": "‖2‖5‖",
@@ -97,7 +97,7 @@ def test_guru_latn_pa() -> None:
         "ਜੀਅ": "jīa",
         "ਲੋਅ": "loa",
         "ਜੱਥਾ": "jatthā",
-        "ਵੱਡਾ": "waḍḍā",
+        "ਵੱਡਾ": "vaḍḍā",
         "ਮਿੱਟੀ": "miṭṭī",
         "ਜਿਨੑਾ": "jinā",
         "ਬੰਨੑਿ": "bañn",
@@ -136,45 +136,15 @@ def test_guru_latn_pa() -> None:
         "ਦਿਤ꠴ਯਾਦਿਤ꠵ਯ": "ditayāditya",
         "ਤ੍ਰਸ꠵ਯੋ": "trasyo",
         "ਸ੍ਨੇਹੰ": "snehañ",
-        "ਜਗਦੀਸ੍ਵਰਹ": "jagadīswarah",
-        "ਜਗ‧ਦੀਸ੍ਵਰਹ": "jagdīswarah",
         "ਖਿਨੁ": "khin",
         "ਮੂਲਿ": "mūl",
-        "ਮਹਲਾ ੫ ॥": "mahalā 5 ‖",
-        "ਮਹ‧ਲਾ ੫ ॥": "mahlā 5 ‖",
-        # "ਓਹੁ": "oh",
-        # "ਓਹੁ": "ō",
-        # "ਮੁਹਿ": "mo",
-        # "ਇਹੁ": "e",
-        # "ਪਾਇਹੁ": "pāe",
-        # "ਕਰਿਹੁ": "kare",
-        # "ਜਾਣਾਇਹਿ": "jāṇāe",
-        # "ਵਾਹਿ": "vāhe",
-        # "ਕਿਹੜਾ": "keṛā",
-        # "ਕਹਿਣਾ": "kēṇā",
-        # "ਸ਼ਹਿਰ": "shēr",
-        # "ਮਹਿੰਗਾ": "mēñgā",
-        # "ਵੀਸਰਹਿ": "vīsarē",
-        # "ਬੋਲਹਿ": "bolē",
-        # "ਦੁਹਰਾ": "dorā",
-        # "ਕੁਹੜਾ": "koṛā",
-        # "ਮੁਹੱਬਤ": "mohabbat",
-        # "ਵਹੁਟੀ": "wōṭī",
-        # "ਮਨਹੁ": "manō",
-        # "ਸਦਿਹੁ": "sade",
-        # "ਸੁਣਿਅਹੁ": "suṇiao",
-        # "ਸੁਨੀ꠴ਯਹੁ": "sunīyō",
-        # "ਸੁਆਲਿਹੁ": "suāleo",
-        # "ਸਿਵਰਿਹੁ": "sivareo",
-        # "ਸਾਲਾਹਿਹੁ": "sālāheo",
-        # "ਭੋਗਿਹੁ": "bhogeo",
-        # "ਮੇਲਿਹੁ": "meleo",
-        # "ਭਗਤਹੁ": "bhagatō",
-        # "ਆਵਹੁ": "āwo"
-        # "ਨਿਹੰਗ" : "neang"
-        # "ਨਿ‧ਹੰਗ" : "nihang"
     }
 
+    for key, value in assertions.items():
+        assert convert(key, "guru_latn_pa") == value
+
+
+def test_guru_latn_pa_common() -> None:
     common_phrases = {
         "ਅੰਮ੍ਰਿਤਸਰ": "añmritasar",
         "ਅੰਮ੍ਰਿਤ‧ਸਰ": "añmritsar",
@@ -182,18 +152,17 @@ def test_guru_latn_pa() -> None:
         "ਗੋਬਿੰਦ": "gobiñd",
         "ਗੋੁਬਿੰਦ": "gobiñd",
         "ਸੰਤ": "sañt",
-        "ਸਾਹਿਬ": "sāhib",
         "ਨਾਨਕ": "nānak",
         "ਵਾਹਿਗੁਰੂ": "vāhigurū",
+        "ਵਾਹਿ‧ਗੁਰੂ": "vāhgurū",
         "ਗੁਰਦੁਆਰਾ": "guraduārā",
         "ਗੁਰ‧ਦੁਆਰਾ": "gurduārā",
-        "ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਿਹ": "vāhigurū jī kā khālsā vāhigurū jī kī fateh",
-        "ਵਾਹਿ‧ਗੁਰੂ": "vāhegurū",
+        "ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲ‧ਸਾ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਿਹ": "vāhigurū jī kā khālsā vāhigurū jī kī fateh",
         "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ": "sat srī akāl",
         "ਬੋਲੇ ਸੋ ਨਿਹਾਲ": "bole so nihāl",
         "ਚੜ੍ਹਦੀ ਕਲਾ": "caṛhadī kalā",
         "ਚੜ੍ਹ‧ਦੀ ਕਲਾ": "caṛhdī kalā",
-        "ਵੰਡ ਛਕੋ": "wañḍ chako",
+        "ਵੰਡ ਛਕੋ": "vañḍ chako",
         "ਗੁਰਮਤਿ": "guramat",
         "ਗੁਰ‧ਮਤਿ": "gurmat",
         "ਪੰਜ ਪਿਆਰੇ": "pañj piāre",
@@ -203,7 +172,8 @@ def test_guru_latn_pa() -> None:
         "ਗੁਰੂ ਅਮਰ ਦਾਸ": "gurū amar dās",
         "ਗੁਰੂ ਰਾਮ ਦਾਸ": "gurū rām dās",
         "ਗੁਰੂ ਅਰ‧ਜਨ": "gurū arjan",
-        "ਗੁਰੂ ਹਰਿ‧ਗੋਬਿੰਦ": "gurū har gobiñd",
+        "ਗੁਰੂ ਹਰਿ‧ਗੋਬਿੰਦ": "gurū hargobiñd",
+        "ਗੁਰੂ ਹਰਿ ਗੋਬਿੰਦ": "gurū har gobiñd",
         "ਗੁਰੂ ਹਰਿ ਰਾਇ": "gurū har rāi",
         "ਗੁਰੂ ਹਰਿ ਕ੍ਰਿਸ਼ਨ": "gurū har krishan",
         "ਗੁਰੂ ਤੇਗ਼ ਬਹਾਦਰ": "gurū teġ bahādar",
@@ -212,13 +182,17 @@ def test_guru_latn_pa() -> None:
         "ਭਗਤ ਬੈਣੀ": "bhagat bēṇī",
         "ਭਾਈ ਮਰ‧ਦਾਨਾ": "bhāī mardānā",
         "ਬਾਬਾ ਬੁੱਢਾ": "bābā buḍḍhā",
-        "ਰਹ‧ਰਾਸਿ ਸਾਹਿਬ": "rahrās sāhib",
-        "ਬੇਨ‧ਤੀ": "benti",
+        "ਬੇਨ‧ਤੀ": "bentī",
         "ਅਰ‧ਦਾਸ": "ardās",
-        "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵੱਯੇ": "twa prasād sawayye",
-        "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸ੍ਵਯੇ": "twa prasād swaye",
+        "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸਵੱਯੇ": "tva prasād savayye",
+        "ਤ੍ਵ ਪ੍ਰਸਾਦਿ ਸ੍ਵਯੇ": "tva prasād svaye",
     }
 
+    for key, value in common_phrases.items():
+        assert convert(key, "guru_latn_pa") == value
+
+
+def test_guru_latn_pa_dictionary() -> None:
     dictionary_words = {
         "ਭਰਾ": "bharā",
         "ਭਾਈ": "bhāī",
@@ -227,7 +201,6 @@ def test_guru_latn_pa() -> None:
         "ਅਚਾਰ": "acār",
         "ਅਜ਼ਾਦ": "azād",
         "ਅਨਾਰ": "anār",
-        "ਅੱਲਾਹ": "allāh",
         "ਰੱਬ": "rabb",
         "ਅੱਖਰ": "akkhar",
         "ਆਕਾਸ਼": "ākāsh",
@@ -244,10 +217,166 @@ def test_guru_latn_pa() -> None:
         "ਕਣਕ": "kaṇak",
         "ਕਮਲ": "kamal",
         "ਪਦਮ": "padam",
-        "ਕੰਵਲ": "kañwal",
+        "ਕੰਵਲ": "kañval",
     }
+    for key, value in dictionary_words.items():
+        assert convert(key, "guru_latn_pa") == value
 
-    for key, value in (
-        assertions.items() and common_phrases.items() and dictionary_words.items()
-    ):
+
+def test_guru_latn_pa_haha() -> None:
+    haha_words = {
+        # In comments below, the C = consonant, V = vowel
+        #
+        # medial/final ਹ preceded by C = C ੈ ਹ
+        "ਰਹ‧ਰਾਸਿ ਸਾਹਿਬ": "rēhrās sāhib",
+        "ਸਹਜ": "sēhaj",
+        "ਮਹਲਾ ੫ ॥": "mēhalā 5 ‖",
+        "ਜਗਦੀਸ੍ਵਰਹ": "jagadīsvarēh",
+        "ਜਗ‧ਦੀਸ੍ਵਰਹ": "jagdīsvarēh",
+        "ਤਹ": "tēh",
+        #
+        # mid ਹਾ preceded by C should stay the same
+        "ਬਹਾਦਰ": "bahādar",  # not bēhādar
+        "ਰਹਾਉ": "rahāu",  # not rēhāu
+        #
+        # mid ਹਿ preceded by CV should stay the same
+        "ਸਾਹਿਬ": "sāhib",
+        #
+        # end ਹ preceded by CV should stay the same
+        "ਅੱਲਾਹ": "allāh",  # not allā, the h should be included here
+        #
+        #
+        "ਫ਼ਤਿਹ": "fateh",
+        # haha in middle, then include the letter, but don't add mukta if vowel-less
+        # include mukta if attached with addak, nasalization
+        # plain letter + plain haha = ē instead of mukta
+        "ਧਰਹੁ": "dharōh",
+        "ਆਵਹੁ": "āvōh",
+        "ਓਹੁ": "oh",
+        "ਮੁਹਿ": "muh",
+        "ਜਾਣਾਇਹਿ": "jāṇāih",
+        "ਵਾਹਿ": "vāh",
+        "ਕਿਹੜਾ": "kehṛā",
+        "ਕਹਿਣਾ": "kēhṇā",
+        "ਸ਼ਹਿਰ": "shēhr",
+        "ਮਹਿੰਗਾ": "mēhñgā",
+        "ਵੀਸਰਹਿ": "vīsarēh",
+        "ਵੀਸ‧ਰਹਿ": "vīsrēh",
+        "ਆਵਹਿ": "āvēh",
+        "ਬੋਲਹਿ": "bolēh",
+        "ਦੁਹਰਾ": "dohrā",
+        "ਕੁਹੜਾ": "kohṛā",
+        "ਮੁਹੱਬਤ": "mohbbat",
+        "ਵਹੁਟੀ": "vōhṭī",
+        "ਮਨਹੁ": "manōh",
+        #
+        "ਇਹੁ": "ih",
+        "ਪਾਇਹੁ": "pāih",
+        "ਕਰਿਹੁ": "karih",
+        #
+        "ਸਦਿਹੁ": "sadih",
+        #
+        "ਸੁਣਿਅਹੁ": "suṇiōh",
+        #
+        "ਸੁਨੀ꠴ਯਹੁ": "sunīyōh",
+        #
+        "ਸੁਆਲਿਹੁ": "suālih",
+        "ਸਿਵਰਿਹੁ": "sivarih",
+        "ਸਾਲਾਹਿਹੁ": "sālāhih",
+        "ਭੋਗਿਹੁ": "bhogih",
+        "ਮੇਲਿਹੁ": "melih",
+        "ਭਗਤਹੁ": "bhagatōh",
+        #
+        "ਨਿਹੰਗ": "nehñg",
+        # "ਨਿ‧ਹੰਗ": "nihañg",
+    }
+    for key, value in haha_words.items():
+        assert convert(key, "guru_latn_pa") == value
+
+
+def test_guru_latn_pa_vava_wawa() -> None:
+    vava_wawa_words = {
+        #
+        #
+        # vava
+        #
+        # ਵੀ
+        "ਵੀਰ": "vīr",
+        "ਵੀਸ‧ਰਹਿ": "vīsrēh",
+        "ਅੱਚ‧ਵੀ": "accvī",
+        #
+        # ਵਿ
+        "ਵਿਆਹ": "viāh",
+        "ਵਿਚਾਰ": "vicār",
+        "ਵਿੱਚ": "vicc",
+        "ਵਿਛੋੜਾ": "vichoṛā",
+        "ਵਿਚੋਲਾ": "vicolā",
+        "ਵਿਦ‧ਯਾ": "vidyā",
+        "ਵਿਰ‧ਸਾ": "virsā",
+        "ਵਿਸਾਖੀ": "visākhī",
+        "ਵਿਸ‧ਰਨ": "visran",
+        "ਵਿਸ‧ਰਾਮ": "visrām",
+        #
+        # ਵੇ
+        "ਵੇਚ‧ਣਾ": "vecṇā",
+        "ਵੇਦ": "ved",
+        "ਵੇਕਾਰ": "vekār",
+        "ਵੇਲਾ": "velā",
+        "ਵੇਸਾਖੀ": "vesākhī",
+        "ਅਭੇਵ": "abhev",
+        "ਐਵੇਂ": "ēveñ",
+        #
+        # ਵੈ
+        "ਵੈਦ": "vēd",
+        "ਵੈਪਾਰੀ": "vēpārī",
+        "ਵੈਸਾਖੀ": "vēsākhī",
+        "ਵੈਸ਼‧ਨੋ": "vēshno",
+        "ਆਵਹਿ": "āvēh",
+        #
+        #
+        # wawa on unstressed initial syllable?
+        # can explore later
+        #
+        # ਵ
+        "ਵਛਾਈ": "vachāī",
+        "ਵਚੋਲਾ": "vacolā",
+        "ਵਦ": "vad",
+        "ਵੱਡਾ": "vaḍḍā",
+        "ਵਡਿਆਈ": "vaḍiāī",
+        "ਵਗ‧ਣਾ": "vagṇā",
+        "ਵਜਾਉਣਾ": "vajāuṇā",
+        "ਵਖ‧ਰਾ": "vakhrā",
+        "ਵਕੀਲ": "vakīl",
+        "ਵੰਡਨ": "vañḍan",
+        "ਵਨਜ": "vanaj",
+        "ਵਰ‧ਤਾਉਣਾ": "vartāuṇā",
+        "ਦੀਸ੍ਵਰ": "dīsvar",
+        #
+        # ਵਾ
+        "ਵਾਚਕ": "vācak",
+        "ਵਾਧੂ": "vādhū",
+        "ਵਾਹ": "vāh",
+        "ਵਾਕ": "vāk",
+        "ਵਾਲਾ": "vālā",
+        "ਵਾਰ": "vār",
+        "ਵਾਰਸ": "vāras",
+        "ਵਾਸ‧ਤੇ": "vāste",
+        "ਅਗ‧ਵਾਨ": "agvān",
+        #
+        # ਵੁ
+        "ਵੁਜੂ": "vujū",
+        #
+        # ਵੂ
+        "ਵੂਕ‧ਣੀ": "vūkṇī",
+        #
+        # ਵੋ
+        "ਵੋੜ੍ਹ": "voṛh",
+        "ਦਵੋਲੀਆ": "davolīā",
+        #
+        # ਵੌ
+        "ਵੌਕਾ": "vōkā",
+        "ਵਹੁਟੀ": "vōhṭī",
+        "ਪੀਵਹੁ": "pīvōh",
+    }
+    for key, value in vava_wawa_words.items():
         assert convert(key, "guru_latn_pa") == value
